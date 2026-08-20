@@ -1,32 +1,30 @@
 ---
-title: Companion module
-description: Ontime's companion module
+title: Companion モジュール
+description: Stream Deck / Bitfocus Companion 用 Ontime モジュール
 ---
 import { Image } from 'astro:assets';
 import companion from '../../../assets/images/companion.png';
 import sharelink from '../../../assets/screenshots/editor/settings/network__companion-link.png';
 
-We maintain a [Companion module](https://bitfocus.io/connections/getontime-ontime) which allows you to integrate and control your Ontime app.
+Elgato Stream Deck やコントローラーから Ontime を直感的に操作できる公式 [Bitfocus Companion モジュール](https://bitfocus.io/connections/getontime-ontime) が提供されています。
 
 <Image src={companion} alt="Companion module" width={600} />
 
-### Connecting to Ontime from Ontime's companion module
+### Companion から Ontime への接続設定
 
 ![Network settings](../../../assets/screenshots/editor/settings/network__companion-link.png)
 
-To connect companion to Ontime you will need to provide the module with an address to Ontime's server. \
-This can be a IP address in your local network, localhost (if you are running everything in the same machine) or a URL for Ontime Cloud.
+Companion を Ontime に接続するには、モジュール設定で Ontime サーバーのアドレスを指定します。 \
+同一 PC 内であれば `localhost`、ローカルネットワーク内の他端末であればローカル IP アドレス、Ontime Cloud の場合はステージ URL を指定します。
 
-Ontime provides an interface to generate these links:
-1. Navigate to `Editor` -> `Settings` -> `Sharing and reporting` -> `Share link`
-2. Select `Companion` as `Ontime view`
-3. If your stage is behind a password, activate the `Authenticate` toggle
-4. Click the `Create share link` button which adds the address to your clipboard
+Ontime 側で接続用のアドレスを簡単にコピーできます：
+1. `エディタ` -> `設定` -> `共有とレポート` -> `リンクを共有` を開きます
+2. `Ontime ビュー` で **Companion** を選択します
+3. ステージがパスワード保護されている場合は、**認証を含める** のトグルをオンにします
+4. **共有リンクを作成** ボタンをクリックしてアドレスをクリップボードにコピーします
+5. Companion の設定画面に戻り、`Ontime server address` 欄に貼り付けます
 
-5. Back to Companion, you can now insert the copied address in the `Ontime server address` field
-
-:::tip[Help us improve]
-Found a bug? \
-Have an idea? \
-Open a ticket in [the module repository](https://github.com/bitfocus/companion-module-getontime-ontime)
+:::tip[開発へのフィードバック]
+バグ報告や機能要望は [Companion モジュール リポジトリ (bitfocus/companion-module-getontime-ontime)](https://github.com/bitfocus/companion-module-getontime-ontime) までお寄せください。
 :::
+

@@ -1,17 +1,41 @@
 ---
-title: Ontime
-description: Free open-source software for managing rundowns and event timers
+title: Ontime 日本語ドキュメント
+description: 進行表（ランダウン）とイベントタイマーを管理するオープンソースソフトウェア
 template: splash
 banner:
-  content: Are you looking for the <a href="https://v3docs.getontime.no">v3 documentation?</a>
+  content: 本サイトは、日本語環境および日本語 IME に最適化された個人フォーク版「ontime-JP」の非公式ドキュメントです。
 hero:
-  tagline: Free open-source software for managing <b>rundowns</b> and <b>event timers</b>
+  tagline: <b>進行表（ランダウン）</b>と<b>イベントタイマー</b>を管理する無償のオープンソースソフトウェア<br /><small>日本語 UI および日本語 IME 入力に完全対応したコミュニティフォーク版</small>
   actions:
-    - text: Read the docs
+    - text: ドキュメントを読む
       link: /ontime/
       icon: right-arrow
       variant: primary
-    - text: Visit the website
+    - text: ontime-JP (GitHub)
+      link: https://github.com/sorami-wanwan/ontime-JP
+      icon: external
+    - text: 公式サイト (英語)
       link: https://www.getontime.no
       icon: external
+      variant: minimal
 ---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## ontime-JP（日本語フォーク版）について
+
+<CardGrid>
+  <Card title="日本語 UI に完全対応" icon="seti:html">
+    エディタ、キューシート、オペレーター画面、各種タイマー画面など、すべてのインターフェースを日本語化しています。
+  </Card>
+  <Card title="日本語 IME 入力の最適化" icon="pencil">
+    日本語入力（IME）確定時のキーショートカット誤爆を防止し、現場でのスムーズなタイピングとデータ入力を実現しています。
+  </Card>
+  <Card title="完全な日本語マニュアル" icon="open-book">
+    全機能、各種 API（HTTP / OSC / WebSocket）、外部連携ツールの使い方を網羅した日本語ドキュメントを提供しています。
+  </Card>
+  <Card title="オープンソース & 自由な利用" icon="github">
+    Carlos Valente 氏による公式版 [Ontime](https://github.com/cpvalente/ontime)（GPL v3）をベースにしたコミュニティフォークです。
+  </Card>
+</CardGrid>
+

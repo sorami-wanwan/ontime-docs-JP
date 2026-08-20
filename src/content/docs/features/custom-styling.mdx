@@ -1,72 +1,72 @@
 ---
-title: Custom styling
-description: Use a custom stylesheet to define your own styles
+title: カスタムスタイリング (CSS)
+description: カスタムスタイルシートを使って独自のデザインを適用
 ---
 
-You can override the app-defined styles for some views by changing a supplied CSS override file.
+CSS 上書きファイルを編集することで、Ontime の各ビューのデフォルトスタイルを独自にカスタマイズできます。
 
-You can toggle this feature and edit the CSS file in `Editor` -> `Settings` -> `View settings`.
+この機能の有効化および CSS ファイルの編集は、`エディタ` -> `設定` -> `ビュー設定` から行えます。
 
-## Notes on style overriding
+## スタイル上書きに関する注意点
 
-The provided CSS will be loaded along with the page. 
+設定したカスタム CSS は各画面の読み込み時に同時に読み込まれます。
 
-We simplify the customisation of the views by exposing a few CSS custom properties (see below). \
-Alternatively, can inspect the page manually and override any styles relevant.
+簡単にスタイリングできるよう、Ontime では主要な CSS カスタムプロパティ（CSS変数）を用意しています（下記参照）。 \
+また、ブラウザの開発者ツールでページ要素を検証し、任意の CSS クラスを直接上書きすることも可能です。
 
-:::tip[Show me the code]
-The documentation here will likely become out of sync as we add more features to Ontime. \
-See the definition directly in the [example override file here](https://github.com/cpvalente/ontime/blob/master/apps/server/src/user/styles/bundledCss.ts).
+:::tip[実際のコードを確認する]
+機能追加に伴いドキュメントの記載が最新のコードと異なる場合があります。 \
+最新の変数定義は [GitHub 上のサンプル CSS 定義](https://github.com/cpvalente/ontime/blob/master/apps/server/src/user/styles/bundledCss.ts) を直接ご確認ください。
 
-You can also see an example of this is practice in the [Custom background tip](/quick-tips/custom-background/).
+実際の適用例は [カスタム背景のクイックTips](/quick-tips/custom-background/) でも紹介しています。
 :::
 
 ```css
 :root {
-  /** Background colour for the views */
+  /** ビューの背景色 */
   --background-color-override: #ececec;
 
-  /** Main text colour for the views */
+  /** ビューのメイン文字色 */
   --color-override: #101010;
 
-  /** Text colour for the views */
+  /** ビューのサブ文字色 */
   --secondary-color-override: #404040;
 
-  /** Accent text colour, used on active elements */
+  /** アクセント文字色（アクティブな要素に使用） */
   --accent-color-override: #fa5656;
 
-  /** Label text colour, used on active elements */
+  /** ラベル文字色 */
   --label-color-override: #6c6c6c;
 
-  /** Timer text colour */
+  /** タイマーの文字色 */
   --timer-color-override: #202020;
   --timer-warning-color-override: #ffbc56;
   --timer-danger-color-override: #e69000;
   --timer-overtime-color-override: #fa5656;
   --timer-pending-color-override: #578AF4;
 
-  /** Background for card elements on background */
+  /** カード要素の背景色 */
   --card-background-color-override: #fff;
 
-  /** Font used for all text in views */
+  /** 全体のフォントファミリ */
   --font-family-override: 'Open Sans';
 
-  /** Colour used for external message and aux timer in /timer */
+  /** /timer ビュー内の外部メッセージおよびAUXタイマーの文字色 */
   --external-color-override: #161616;
 
-  /** View specific features: /backstage */
-  /** ---- Background highlight for blink behaviour */
+  /** ビュー専用設定: /backstage */
+  /** ---- 点滅動作時の背景ハイライト色 */
   --card-background-color-blink-override: #339e4e;
-  /** ---- Colour used for progress bar background */
+  /** ---- プログレスバーの背景色 */
   --timer-progress-bg-override: #fff;
-  /** ---- Colour used for progress bar progress */
+  /** ---- プログレスバーの進行部分の色 */
   --timer-progress-override: #202020;
 
-  /** View specific features: /op */
+  /** ビュー専用設定: /op */
   --operator-customfield-font-size-override: 1.25rem;
   --operator-running-bg-override: #339e4e;
 
-  /** View specific features: /studio */
+  /** ビュー専用設定: /studio */
   --studio-active: #101010;
   --studio-idle: #cfcfcf;
   --studio-active-label: #101010;
@@ -74,3 +74,4 @@ You can also see an example of this is practice in the [Custom background tip](/
   --studio-overtime: #101010;
 }
 ```
+

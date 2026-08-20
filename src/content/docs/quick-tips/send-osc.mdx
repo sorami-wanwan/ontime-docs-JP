@@ -1,46 +1,45 @@
 ---
-title: Sending OSC
-description: Sending OSC (Open Sound Control) from Ontime
+title: Ontime からの OSC 送信
+description: オートメーション機能を使用した OSC メッセージの送信
 ---
 
-You can leverage the [automation feature](/api/automation) to send Ontime data to other applications via OSC (Open Sound Control).
+Ontime の [オートメーション機能](/api/automation/) を使用して、イベントの開始やタイマーの進行に合わせて、OSC (Open Sound Control) メッセージを外部の音響・照明卓やメディアサーバーへ送信できます。
 
-
-## OSC Payload examples
-When sending an OSC message, the argument type is not explicitly given by the user but inferred by Ontime.
-
+## OSC ペイロードの型推論ルール
+OSC メッセージを送信する際、引数のデータ型は Ontime によって自動的に判別（推論）されます。
 
 ```
-| OSC Payload                   | Parsed type                   |
+| 入力された OSC ペイロード     | 推論される型                  |
 | ----------------------------- | ----------------------------- |
+| 1111                          | Int (整数)                    |
+| 0.1111                        | Float (浮動小数点数)          |
+| test                          | String (文字列)               |
+| "1111"                        | String (文字列)               |
+| true                          | True (真偽値)                 |
+| false                         | False (真偽値)                |
+```
+
+スペースで区切って複数の引数を指定した場合、それぞれが個別の引数としてパースされます：
+
+```bash title="複数引数の指定例"
+"with space" 1111 0.1111 TRUE FALSE
+```
+
+上記は以下のように 5 つの引数を持つ 1 つの OSC メッセージとして送信されます：
+
+```
+| ペイロード値                  | パース結果の型                |
+| ----------------------------- | ----------------------------- |
+| 'with space'                  | String                        |
 | 1111                          | Int                           |
 | 0.1111                        | Float                         |
-| test                          | String                        |
-| "1111"                        | String                        |
 | true                          | True                          |
 | false                         | False                         |
 ```
 
-You can also send multiple, space separated arguments which will be parsed individually.
+:::note[テンプレート変数使用時の注意]
+この型推論ルールは [テンプレート変数](/api/automation/#オートメーションでの変数の使用) にも適用されます。
 
-```bash title="Multiple arguments"
-"with space" 1111 0.1111 TRUE FALSE
-```
-
-Which would be sent as a single message with the payload
-
-```
-| Payload value                 | Parsed type                   |
-| ----------------------------- | ----------------------------- |
-| 'with space'                  | String                        |
-| 1111                          | Int                           |
-| 0.1111                        | Float                         |
-| true                          | True                          |
-| false                         | False                         |
-```
-
-:::note
-Keep in mind that these rules will also affect [template variables](/api/automation#using-variables-in-automation).
-
-We advise wrapping template variables that you want to remain as strings in quotes to avoid unintended payloads of strings being split by their spaces or interpreted as numbers.
+空白を含む文字列や数字のみで構成された文字列変数が意図せず分割されたり数値として扱われたりするのを防ぐため、文字列として扱いたい変数はダブルクォートで囲むことを推奨します（例: `"{{eventNow.title}}"`）。
 :::
+

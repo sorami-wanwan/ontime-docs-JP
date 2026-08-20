@@ -1,29 +1,31 @@
 ---
-title: Unsigned App
-description: Unsigned App
+title: 未署名アプリケーションについて
+description: コード署名に関する注意と警告の解除方法
 ---
 
 :::note
-Signing the app means a recurring cost, which, we cannot support.\
-If you have tips on how to improve this or would like to sponsor the code signing, get in touch [by email](mailto:mail@getontime.no) or open a [ticket in Github](https://github.com/cpvalente/ontime/issues).
+商用コード署名証明書の取得・維持には継続的な費用がかかるため、オープンソース版の Ontime は未署名で配布されています。 \
+コード署名のスポンサー支援やアイデアをお持ちの方は、[メール (mail@getontime.no)](mailto:mail@getontime.no) または [GitHub Issue](https://github.com/cpvalente/ontime/issues) までご連絡ください。
 :::
 
-Ontime is unsigned.\
-This doesn't affect the quality or reliability of the code, but it does trigger some warnings in the operating system, discouraging you from running the app.
+Ontime はコード署名が行われていません。 \
+これはコードの品質や安全性に問題があるわけではありませんが、各 OS のセキュリティ機能によって警告ダイアログが表示される場合があります。
 
 ## Windows
 
-In Windows you could see a message like:
+Windows では SmartScreen による以下のような警告が表示される場合があります：
 ```
-Microsoft Defender SmartScreen prevented an unrecognised app from starting. Running this app might put your PC at risk.
+Windows によって PC が保護されました
+Microsoft Defender SmartScreen は認識されないアプリの起動を停止しました。このアプリを実行すると、PC が危険にさらされる可能性があります。
 ```
 
-To circumvent, click `more` and select `Run Anyway`
+起動を許可するには、**「詳細情報」** をクリックし、表示された **「実行」** ボタンをクリックしてください。
 
 ## Linux
 
-In Linux you could see a message like:
+Linux（AppImage 形式）で以下のようなエラーが表示される場合：
 ```
 Could Not Display "ontime-linux.AppImage"
 ```
-To circumvent, right-click the AppImage file: `Properties` -> `Permissions` -> `Allow Executing File as a Program`
+AppImage ファイルを右クリックして `プロパティ` -> `アクセス権`（Permissions）を開き、**「プログラムとして実行可能にする」**（Allow Executing File as a Program）にチェックを入れてください。
+

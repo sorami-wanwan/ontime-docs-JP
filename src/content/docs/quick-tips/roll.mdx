@@ -1,31 +1,31 @@
 ---
-title: Roll Mode
-description: Ontime runs on its own
+title: ロールモード (Roll Mode)
+description: Ontime を現在時刻に追従させて自動完全自走させる再生モード
 ---
 
-**Roll** is a playback mode allowing Ontime to run standalone using the current clock. \
-It can be used independently or in conjunction with manual playback to allow for automated rundown sections.
+**ロールモード (Roll)** は、現在のシステム実時刻（時計）に合わせて、Ontime を完全自動で自走させるプレイバックモードです。 \
+単独での自動運用はもちろん、手動再生と組み合わせて「特定の時間帯だけ自動進行させる」といった運用が可能です。
 
-:::note[Example]
-- 12:00 - 17:00 -> Stage setup
-- 17:00 - 19:00 -> Dinner
-- 19:00 - 19:30 -> Doors
-- 19:30 - 20:00 -> Warm up act
-- 20:00 - 20:10 -> Main act
+:::note[活用例]
+- 12:00 - 17:00 -> 会場設営・リハーサル
+- 17:00 - 19:00 -> 夕食休憩
+- 19:00 - 19:30 -> 開場（客入れ）
+- 19:30 - 20:00 -> オープニングアクト
+- 20:00 - 20:10 -> メインアクト
 
-In a concert setting, we could have a rundown that includes house and production events. \
-In that case, automating parts of the rundown would be desirable since there is no sitting operator for those sections. \
-At the show start, we would manually take over the playback to run the timers and their integrations.
+コンサートやカンファレンスなどでは、開場前や転換中などオペレーターが常駐していない時間帯があります。 \
+その間はロールモードで自動的に各スケジュールに追従させ、本番開始時に手動操作に切り替えて厳密なタイムキーピングを行う、といった柔軟な運用が可能です。
 :::
 
-### General behaviour
-- As long as there are non-skipped events in the rundown, we will always accept Roll mode
-- If there are no events in the current time frame, we load the next event and count down to its start
-- Roll will always load the first matching event in the current time, this could cause issues if there are multiple days planned or if the rundown is not in order
-- Roll mode will automate loading the next event when the current is finished
+### 基本動作
+- 進行表内にスキップされていない有効なイベントが存在する限り、ロールモードを有効化できます。
+- 現在の実時刻に該当するイベントがない場合、直近の次のイベントを自動でロードし、その開始時刻に向けてカウントダウンします。
+- 現在時刻に該当するイベントが複数ある場合は最初の一致イベントがロードされます。
+- 現在のイベントが終了すると、自動的に次のイベントをロードしてカウントダウンを継続します。
 
-### Moving from manual playback to Roll
-If we go from manual playback to Roll mode, the playback will continue as is. \
-There are a few edge cases to consider:
-- Roll is disabled if the current event is in overtime
-- Roll will maintain the current offset when considering event end / start times. You would need to manage the offset manually
+### 手動再生からロールモードへの切り替え
+手動再生からロールモードに切り替えた場合、再生はそのまま自動モードへと移行します。 \
+以下の点にご注意ください：
+- 現在のイベントが超過時間（オーバータイム）に入っている場合、ロールモードへの移行は無効化されます。
+- ロールモードは、切り替え時点のオフセット（遅延・進み）を維持して後続イベントの開始/終了時刻を計算します。
+

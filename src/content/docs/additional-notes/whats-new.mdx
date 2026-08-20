@@ -1,42 +1,40 @@
 ---
-title: What's new in v4
-description: What's new in v4
+title: バージョン 4 の新機能
+description: Ontime v4 で追加・変更された主な新機能
 ---
 
 import { LinkCard } from "@astrojs/starlight/components";
 
-### More
+### Ontime v4 の進化
 
-We have been working on Ontime for over 5 years.
-Thousands of users are leveraging Ontime in different fields, from streaming to conferences, festivals and churches. \
-Ontime is, at this point, an impactful project in the space, empowering users with professional-level tools at no cost.
+Ontime プロジェクトの開発が始まってから 5 年以上が経過しました。 \
+現在では、ライブ配信、カンファレンス、音楽フェス、舞台公演など、世界中の現場で数千人以上のクリエイターやオペレーターに愛用されています。
 
-Over time, we have learned more about how we can make Ontime solve real-world user cases on-site.
+現場からの多くのフィードバックをもとに、最新のメジャーリリース（v4）では進行表の表現力向上と、タイムキーピングに基づく柔軟な意思決定を強力にサポートする新機能が追加されました：
 
-The newest release (v4) focuses on improving the user's ability to detail the rundown and leverage timers to make decisions on it. \
+- [x] **グループ化**: イベントをグループ化し、グループ終了までの残り時間をリアルタイムに追跡可能に。
+- [x] **フラグ機能**: 進行表内の任意の重要イベントにフラグを立て、そこまでのカウントダウンタイマーを生成可能に。
+- [x] **マイルストーン**: 進行表内に通過点や定刻チェックポイントを設ける「マイルストーン」エントリタイプを追加。
+- [x] **権限制御**: キューシートの共有リンクごとにきめ細やかな読み取り/書き込み権限を設定可能にし、共同編集の安全性を向上。
+- [x] **URLプリセット**: ビューの詳細な表示カスタマイズを一元管理・配布できるプリセット機能を導入。
+- [x] **マルチ進行表**: 1つのプロジェクトファイル内に複数の進行表（異なるステージや日別など）を保持可能に。
+- [x] **複数のAUXタイマー**: 補助タイマー（AUXタイマー）の数を拡張し、より多様な独立タイマー運用に対応。
+- [x] **UIと体験の全面刷新**: より洗練され、視認性と操作性を高めた新しい UI デザインを採用。
 
-- [x] Allow users to group events and keep track of the time to group completion.
-- [x] Allow users to create a timer to any upcoming event by leveraging flags.
-- [x] Introduce detailing of the rundown by adding of the milestone rundown entry type.
-- [x] Improve collaboration and safety with granular read and write permissions for cuesheet share links.
-- [x] Improve view configuration and sharing leveraging presets.
-- [x] Allow a single project to contain multiple (non-concurrent) rundowns.
-- [x] Added more auxiliary timers for enhanced functionality.
-- [x] Implemented several UI design changes and improvements to user experience.
+... その他多数の改善。
 
-... and many more.
+### 変更および廃止された機能
 
-### Removals and breaking changes
-
-- `Removed` **minimal** and **clock** views in favour of extra customization of the **timer** view.
-- `Removed` **lower thirds**.
-- `Removed` **public data** in favour of filtering based on custom fields.
-- `Removed` support for some languages in favour of user-defined translations.
-- `Removed` CSV export in favour of xlsx (Excel) export.
-- `Breaking` Deprecated **offset** in favour of the more common **over/under**.
+- `廃止` **minimal** および **clock** ビュー（ステージタイマー画面のカスタマイズ機能へ統合）
+- `廃止` **lower thirds**（テロップ専用画面）
+- `廃止` **public data**（カスタムフィールドのフィルタリング機能へ移行）
+- `廃止` 一部言語の組み込み対応（ユーザー定義の翻訳機能へ移行）
+- `変更` CSV エクスポートを廃止し、より堅牢な xlsx (Excel) エクスポートへ移行
+- `変更` オフセット表示の仕様を一般的な **over/under**（押し/巻き）表記へアップデート
 
 <LinkCard
-  title="API documentation"
-  href="/api"
-  description="If you manage an integration to Ontime that leverages WebSockets, check out the API docs"
+  title="API ドキュメント"
+  href="/api/"
+  description="WebSocket や OSC を使って Ontime と外部システムを連携する方法はこちら"
 />
+

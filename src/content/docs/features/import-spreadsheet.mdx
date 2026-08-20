@@ -1,70 +1,69 @@
 ---
-title: Import from spreadsheets
-description: Import data from spreadsheets
+title: スプレッドシートからのインポート
+description: Excel や CSV スプレッドシートから進行表データをインポート
 ---
 
 [spreadsheet-link]: https://docs.google.com/spreadsheets/d/1zT6yRgQUaICEiAFR85VEL-E9hAUDujKg6DaWR0iDYmY
 [css-colour]: https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
 
-Ontime allows importing a rundown from a spreadsheet written elsewhere (eg. Excel or Google Sheets).
+Ontime では、外部で作成されたスプレッドシート（Excel または CSV、Google スプレッドシート）から進行表データをインポートできます。
 
 ![Spreadsheet template](../../../assets/screenshots/features/spreadsheet-template.png)
-Follow [here][spreadsheet-link] to see the Google Sheet template in the screenshot.
+上記スクリーンショットの Google スプレッドシート テンプレートは [こちら][spreadsheet-link] から確認できます。
 
-:::tip[Google Sheets]
-Maybe you are trying to import data from Google Sheets?
-
-The data structure is exactly the same and the documentation below relevant, but some extra steps are needed to authenticate Ontime with Google. \
-See the [guide](/features/import-spreadsheet-gsheet)
+:::tip[Google スプレッドシートとの直接連携]
+Google スプレッドシートから直接インポートや双方向同期を行いたい場合は、Google Cloud の認証設定を行うことで簡単に連携できます。 \
+詳しくは [Google スプレッドシート連携ガイド](/features/import-spreadsheet-gsheet/) をご覧ください。
 :::
 
-## Importing data
+## データのインポート規約
 
-For a successful import, there are a few conventions to follow.
+正常にインポートを行うために、以下のルールに従ってスプレッドシートを作成してください：
 
-1. Ontime reads a single worksheet
-2. You can have as many columns as necessary, Ontime only imports the columns you request
-2. You will provide a reference of the spreadsheet column names on import
-3. Ontime creates a rundown entry for every row on the table (see exception in Timer type notes)
-4. The times can be either an Excel time field or a short text entry as described [in the smart entry feature](/quick-tips/smart-time-entry) eg: `00:10:15` or `10m15s`
+1. Ontime は 1 つのワークシートを読み込みます。
+2. シート内に不要な列が含まれていても問題ありません。Ontime はマッピングで指定した列のみをインポートします。
+3. インポート時にスプレッドシートの各列と Ontime のフィールドを対応付けます。
+4. テーブルの各行が 1 つの進行表エントリとして作成されます（※タイマータイプの例外を除く）。
+5. 時刻・時間は、Excel の時刻形式のほか、[スマートな時間入力](/quick-tips/smart-time-entry/) で解説している短縮文字列（例: `00:10:15` や `10m15s`）でも指定できます。
 
-See below the expected data types of the rundown data
+Ontime が認識する各フィールドのデータ型一覧は以下の通りです：
 
-Note: Field names are not case-sensitive: both `Title` and `title` would be recognised on import.
+※列ヘッダー名は大文字小文字を区別しません（`Title` と `title` のどちらも認識されます）。
 
-| Event Field  | Data Type                                                                               | Default value      |
-| :----------  | :-------------------------------------------------------------------------------------- | :----------------- |
-| Start        | Excel time \| [string](/quick-tips/smart-time-entry)                                    | 00:00:00           |
-| Link start   | boolean                                                                                 | false              |
-| End          | Excel time \| [string](/quick-tips/smart-time-entry)                                    | 00:00:00           |
-| Duration     | Excel time \| [string](/quick-tips/smart-time-entry)                                    | 00:00:00           |
-| Cue          | string                                                                                  | ""                 |
-| Title        | string                                                                                  | ""                 |
-| Skip         | boolean                                                                                 | false              |
-| Note         | string                                                                                  | ""                 |
-| Colour       | string (# hex colour or [named css colour][css-colour])                                 | ""                 |
-| End action   | `none` `load-next` `play-next`                                                          | `none`             |
-| Timer type*  | `count-down` `count-up` `clock` `block` `skip` `group` `group-end` `milestone` `none`   | `count-down`       |
-| Count to end*| boolean                                                                                 | false              |
-| Time warning | Excel time \| [string](/quick-tips/smart-time-entry)                                    | 00:02:00           |
-| Time danger  | Excel time \| [string](/quick-tips/smart-time-entry)                                    | 00:01:00           |
+| イベントフィールド | データ型                                                                                 | デフォルト値        |
+| :----------------- | :--------------------------------------------------------------------------------------- | :------------------ |
+| Start (開始時刻)   | Excel 時刻 \| [文字列](/quick-tips/smart-time-entry/)                                    | 00:00:00            |
+| Link start (開始リンク)| 真偽値 (boolean)                                                                      | false               |
+| End (終了時刻)     | Excel 時刻 \| [文字列](/quick-tips/smart-time-entry/)                                    | 00:00:00            |
+| Duration (所要時間)| Excel 時刻 \| [文字列](/quick-tips/smart-time-entry/)                                    | 00:00:00            |
+| Cue (キュー)       | 文字列 (string)                                                                          | ""                  |
+| Title (タイトル)   | 文字列 (string)                                                                          | ""                  |
+| Skip (スキップ)    | 真偽値 (boolean)                                                                         | false               |
+| Note (メモ)        | 文字列 (string)                                                                          | ""                  |
+| Colour (カラー)    | 文字列 (#16進数カラーコード または [CSSカラー名][css-colour])                            | ""                  |
+| End action (終了アクション)| `none` `load-next` `play-next`                                                    | `none`              |
+| Timer type* (タイマータイプ)| `count-down` `count-up` `clock` `block` `skip` `group` `group-end` `milestone` `none` | `count-down`        |
+| Count to end* (終了までカウント)| 真偽値 (boolean)                                                                 | false               |
+| Time warning (警告時間)| Excel 時刻 \| [文字列](/quick-tips/smart-time-entry/)                                 | 00:02:00            |
+| Time danger (危険時間) | Excel 時刻 \| [文字列](/quick-tips/smart-time-entry/)                                  | 00:01:00            |
 
-:::note[Timer type and skipping import]
-The **Timer type** column extends the possible values for timers. 
+:::note[タイマータイプと行のスキップ]
+**Timer type** 列では、タイマーの動作タイプを指定できます。
 
-Where a timer count type can be `count-down` `count-up` `clock` `count-down`. \
-Adding a value `block` to this field, creates a Block event.
+指定可能なカウント形式: `count-down`、`count-up`、`clock`、`none`。 \
+また、`block` を指定するとブロックエントリが作成されます。
 
-Any value added here that is not one of the above (eg: `skip` or `production`), will prompt Ontime to skip importing this row.
-::: 
+上記以外の値（例: `skip` や `production` など）が入力されている行は、Ontime によってインポート対象外として自動的にスキップされます。
+:::
 
-:::note[Count to end]
-The count to end property can be used to tell Ontime that this event should always count to its scheduled end, regardless of its start time.
-::: 
+:::note[終了までカウント (Count to end)]
+Count to end プロパティを有効にすると、実際の開始時刻にかかわらず、常に予定された終了時刻を目指してカウントダウンするように設定されます。
+:::
 
-### Custom Fields
+### カスタムフィールドのインポート
 
-Ontime allows importing any amount of [custom fields](/features/custom-fields). \
-You will need to provide the title of the relevant columns on import.
+Ontime は任意の数の [カスタムフィールド](/features/custom-fields/) を同時にインポートできます。 \
+インポートウィザードで対応するスプレッドシートの列名を指定してください。
 
-For each field provided, Ontime will create a custom field and add the data in the excel table row to the event.
+指定された各列について、Ontime は自動的にカスタムフィールドを作成し、スプレッドシート内の各行データをイベントに追加します。
+

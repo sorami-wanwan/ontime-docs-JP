@@ -1,41 +1,41 @@
 ---
-title: Event data
-description: Event data
+title: イベントデータ (Event Data)
+description: 進行表イベントのデータ構造定義
 ---
 
-Any scheduled event in Ontime (called an event in the app) will contain the following information. \
-All times are in milliseconds.
+Ontime の進行表内に登録される各イベントは、以下のデータ構造を保持しています。 \
+すべての時刻・時間は午前0時からの **ミリ秒 (ms)** で表現されます。
 
-| Data                       | Note                                                                        |
+| フィールド名               | 説明                                                                        |
 |:---------------------------|:----------------------------------------------------------------------------|
-| ID                         | Event ID, cannot be changed                                                 |
-| Title                      |                                                                             |
-| Cue                        |                                                                             |
-| Colour                     |                                                                             |
-| Note                       | User defined note, available in some views                                  |
-| Time Start                 | Scheduled start time                                                        |
-| Time End                   | Scheduled end time                                                          |
-| Duration                   | Scheduled duration time                                                     |
-| Delay                      | Whether there is a delay associated to the event                            |
-| Skip                       | Skipped events are ignored by the runtime playback                          |
-| Link Start                 | `Internal` whether the start of the event is associated with the previous   |
-| Time Danger                | `Internal` second threshold from time end                                   |
-| Time Warning               | `Internal` second threshold from time end                                   |
-| End Action                 | `Internal` defines potential automation for when an event ends              |
-| Timer Type                 | `Internal` defines a method for the counting of the running timer           |
-| Count to End               | `Internal` whether an event counts to its duration or scheduled end         |
-| Time Strategy              | `Internal` defines the significant dataset for event duration               |
-| Type                       | `Internal`, this will always be `Event`                                     |
-| Custom                     | This is an object of user given custom fields associated to the event       |
+| ID                         | イベントの固有ID（読み取り専用、変更不可）                                  |
+| Title                      | イベントタイトル                                                            |
+| Cue                        | キュー番号                                                                  |
+| Colour                     | カラー設定（HEX または CSSカラー名）                                        |
+| Note                       | ユーザー定義のメモ（各ビューで表示可能）                                    |
+| Time Start                 | 開始予定時刻 (ms)                                                           |
+| Time End                   | 終了予定時刻 (ms)                                                           |
+| Duration                   | 予定所要時間 (ms)                                                           |
+| Delay                      | 関連付けられた遅延時間 (ms)                                                 |
+| Skip                       | スキップフラグ（true の場合、本番再生時に自動でスキップ）                   |
+| Link Start                 | 前のイベントの終了時刻と開始時刻をリンクさせるか                            |
+| Time Danger                | 危険（Danger）警告を発動する残り時間しきい値 (ms)                           |
+| Time Warning               | 注意（Warning）警告を発動する残り時間しきい値 (ms)                          |
+| End Action                 | イベント終了時の自動動作（なし / 次をロード / 次を再生）                    |
+| Timer Type                 | タイマーの計測方式（カウントダウン / カウントアップ / 時計 / なし）         |
+| Count to End               | 実際の開始時刻にかかわらず予定終了時刻を目指してカウントするか              |
+| Time Strategy              | イベントの時間変更時の計算戦略（所要時間ロック / 終了時刻ロックなど）       |
+| Type                       | エントリ種別（常に `event`）                                                |
+| Custom                     | ユーザーが定義したカスタムフィールドのキーと値のオブジェクト                |
 
 ```ts
-// example event data
+// イベントデータの例
 {
   "id": "32d31",
-  "title": "Albania",
+  "title": "開会挨拶",
   "cue": "SF1.01",
   "colour": "",
-  "note": "SF1.01",
+  "note": "マイク1番使用",
   "timeStart": 36000000,
   "timeEnd": 37200000,
   "duration": 1200000,
@@ -51,33 +51,32 @@ All times are in milliseconds.
   "type": "event",
   "revision": 0,
   "custom": {
-    "song": "Sekret",
-    "artist": "Ronela Hajati"
+    "speaker": "山田 太郎",
+    "slides": "Slide-01"
   }
 }
-````
+```
 
-### End action
-An event end-action refers to automations to the rundown that may occur once an event finishes (reaches 00:00). \
-This is unrelated to how the timer is displayed and concerns only to rundown automation.
-- `none`: Event will reach 00:00 and continue playing into (overtime) negative numbers
-- `load-next`: Next event in the rundown will be loaded
-- `play-next`: Next event in the rundown will be loaded and started
+### 終了時のアクション (End action)
+イベントのカウントが終了（00:00 に到達）したときに実行される自動処理を定義します：
+- `none`: 00:00 を超えても再生を継続し、マイナス（超過時間）としてカウントします。
+- `load-next`: 次のイベントを自動的にスタンバイ（ロード）します。
+- `play-next`: 次のイベントを自動的にロードして直ちに再生開始します。
 
-### Timer type
-An event timer-type informs Ontime on how the timer show be presented.
-- `count-down`: Ontime will count down the duration of the event
-- `count-up` : Ontime will count up from when the event starts
-- `clock`: Ontime will display the current clock
-- `none`: Ontime will display a placeholder `--:--:--` when this event is playing
+### タイマーのタイプ (Timer type)
+各ビューでタイマーをどのように表示・計測するかを指定します：
+- `count-down`: 設定された所要時間をカウントダウンします。
+- `count-up`: イベント開始時刻から経過時間をカウントアップします。
+- `clock`: 現在のシステム時刻（時計）を表示します。
+- `none`: タイマー計測を行わず、画面上にプレースホルダー（`--:--:--`）を表示します。
 
-### Count to end
-Usually Ontime will count to the total event duration, regardless of when it is started.\
-The difference is often reflected in offset.
+### 終了までカウント (Count to end)
+通常、Ontime はイベントが何時に開始されたかに関係なく、設定された所要時間分をフルにカウントダウンします（差分はオフセットとして計上されます）。
 
-If `count to end` is active, Ontime will instead count down to the events scheduled end, regardless of the start time. \
-No offset is added unless the event is considered to be in overtime. 
+`Count to end`（終了までカウント）を有効にすると、イベントが遅れて開始した場合でも、本来の終了予定時刻に間に合わせるように残り時間を縮めてカウントダウンします。
 
-### Time strategy
-An event timer-strategy informs Ontime on how to calculate changes to timers when events are linked. \
-[Read more.](/quick-tips/smart-time-entry#time-strategy)
+### 時間戦略 (Time strategy)
+イベント間の時間が変更されたときに、所要時間と終了時刻のどちらを維持するかを定義します。 \
+詳しくは [スマートな時間入力の解説](/quick-tips/smart-time-entry/#時間戦略-time-strategy) をご覧ください。
+
+

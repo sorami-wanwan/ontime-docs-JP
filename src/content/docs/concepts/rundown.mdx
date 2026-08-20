@@ -1,98 +1,92 @@
 ---
-title: Ontime Rundown
-description: Core concepts around Ontime's rundown
+title: 進行表（ランダウン）の概念
+description: Ontime の進行表（ランダウン）に関する基本概念
 ---
 
-Ontime allows users to provide a Rundown (or schedule) of events. \
-The app then infers a sequence of timers from this schedule and can advise show runners / stage managers / operators on deviations to schedule.
+Ontime では、イベントの進行表（ランダウン / スケジュール）を作成して管理できます。 \
+入力されたスケジュール情報から一連のタイマーが自動生成され、予定時刻からの遅延や進み具合をショーディレクター、舞台監督、オペレーターにリアルタイムでフィードバックします。
 
-:::note[What is a rundown?]
-On Ontime's context, "Rundown" is a typical broadcast term for a schedule, ie: an ordered list of content and their timing.
+:::note[進行表（ランダウン）とは？]
+Ontime における「ランダウン (Rundown)」とは、放送・イベント業界で一般的に使われる用語で、番組やイベント内の各セグメントとその時間配分を順番に並べた進行表のことです。
 
-It is used for pre-planning (ensuring we have the right amount of content to fit the allocated time) and, in Ontime's case, leveraged at runtime to keep the show schedule on track.
+事前準備（プリプロダクション）段階では「割り当て時間内に収まるか」の計画作成に用いられ、本番（ランタイム）ではイベントを予定通りスムーズに進行させるために活用されます。
 :::
 
-## Creating rundowns in Ontime
+## Ontime での進行表作成
 
-The primary interface for creating rundowns is the [Editor](/interface/production/app-editor/) view, which is presented when you start Ontime.
+進行表を作成するための主な画面は、Ontime 起動時に表示される [エディタ (Editor)](/interface/production/app-editor/) 画面です。
 
-The Editor will later provide runtime control over the rundown, but for planning time you will have the tooling here to quickly generate rundowns allowing for operations such as reordering, cloning, skipping events...
+エディタは本番中のランタイム制御も行いますが、計画段階では並べ替え、複製、スキップなどの操作を直感的に行い、すばやく進行表を構築できる豊富なツールを提供します。
 
-:::tip[I just want some stage timers]
-Ontime is excellent at scaling from simple to complex use cases. \
-If you all you are looking for in Ontime is to provide stage timers, you likely do not need the advanced rundown offset and metadata.
-
-You are welcome to create a list of events with your needed timers (eg: 1min, 5min, 10min) and save the rest of Ontime's features for another time.
+:::tip[シンプルなステージタイマーとして使いたい場合]
+Ontime はシンプルな用途から大規模で複雑なイベントまで柔軟に対応します。 \
+高度な進行表オフセットやメタデータを使わず、単にステージタイマー（例: 1分、5分、10分のカウントダウン）として使いたいだけの場合でも、手軽にイベントを作成してタイマーとして再生できます。
 :::
 
-## Timers and metadata entries
+## タイマーエントリとメタデータエントリ
 
-Ontime offers two main types of entries to populate your rundown.
+Ontime の進行表には、大きく分けて **タイマーエントリ** と **メタデータエントリ** の 2 種類のエントリを登録できます：
 
-**Timer events** and **metadata events**. In short:
+- **タイマーエントリ (Timer events)**: Ontime がカウントダウンや計測を行うタイマーを生成するエントリ
+- **メタデータエントリ (Metadata events)**: タイマーを生成せず、進行表に情報や注記を整理・追加するためのエントリ
 
-**Timer events** create timers that Ontime can generate countdowns to \
-**Metadata events** allow detailing the rundown with data that does not generate timers
-
-### Events
+### イベント (Events)
 
 ![Rundown event](../../../assets/screenshots/editor/rundown/docs_event.png)
 
-TLDR; Events are individual show segments: a speaker presentation, video playback, or musical performance.
+**概要**: 登壇者のプレゼンテーション、動画再生、音楽演奏など、個々のショーセグメントを表します。
 
-Events are rundown entries which can generate timers. \
-Ontime can play an event and generate the relevant confidence monitor / stage timer views.
+イベントはタイマーを生成する主要な進行表エントリです。 \
+Ontime でイベントを再生（プレイバック）すると、対応するステージタイマーや各種配信ビューに情報が表示されます。
 
-We can also leverage the total duration of events to provide information on the rundown and group total duration and schedule.
+また、イベントの所要時間を積算することで、進行表全体やグループ全体の合計所要時間やスケジュールを算出できます。
 
-See more information on [our quick tips for time entry](/quick-tips/smart-time-entry/).
+詳細な時間入力の仕様については、[スマートな時間入力のクイックTips](/quick-tips/smart-time-entry/) をご覧ください。
 
-### Groups
+### グループ (Groups)
 
 ![Rundown event](../../../assets/screenshots/editor/rundown/docs_group.png)
 
-TLDR; Groups help organize related content: all speakers in a panel, or all scenes in Act 1.
+**概要**: パネルディスカッションの全登壇者や、第1幕の全シーンなど、関連する複数のエントリをまとめることができます。
 
-Groups are a metadata event that allows grouping several entries. \
-Groups entries do not have their own schedule but inherit the schedule from the contents.
+グループは複数のエントリを束ねるメタデータエントリです。 \
+グループ自体は固有のスケジュールを持ちませんが、内部に含まれるイベントのスケジュールを自動的に継承・集計します。
 
-You can leverage groups to segment your rundown and to allow quick move and clone operations on a list of entries.
+グループを活用することで、進行表をセクションごとに構造化し、まとまったエントリの移動や複製を一括で行えます。
 
-Ontime can also create extra metadata timers such as planned and expected times to group end.
+また、Ontime はグループ終了予定時刻や終了見込み時刻までのカウントダウンタイマーも自動生成できます。
 
-### Milestones
+### マイルストーン (Milestones)
 
 ![Rundown event](../../../assets/screenshots/editor/rundown/docs_milestone.png)
 
-TLDR; Milestones add operator notes: give fireworks standby, check change-over progress.
+**概要**: 「特効・花火スタンバイ」「舞台転換の進捗確認」など、オペレーター向けの重要メモを挟み込みます。
 
-Milestones are note entries in the rundown.
+マイルストーンは進行表内のメモ用エントリです。 \
+オペレーターへの指示出しや注意点を進行表の特定のタイミングに挿入できます。 \
+マイルストーンはスケジュール時間を持たず、一般向けのスケジュールビュー（バックステージビューなど）には表示されません。
 
-These allow inserting operator notes or data into the rundown notes. \
-Milestones do not have a schedule and do not show up in the schedule views (ie: backstage).
-
-## Delays and delay flows
+## ディレイ（遅延）エントリ
 
 ![Rundown event](../../../assets/screenshots/editor/rundown/docs_delay.png)
 
-The delay entry is part of Ontime's delay management system.
+ディレイエントリは、Ontime の遅延管理システムの中核機能です。
 
-In Ontime, delays entries can be used to communicate schedule changes to your team.\
-Delays act as an overlay over the schedule are clearly indicated in all views. \
-[Read more](/quick-tips/managing-delays/).
+スケジュールの変更や遅延が発生した際、ディレイエントリを使ってチーム全体に最新の予定変更を伝達できます。 \
+ディレイは元のスケジュールの上にオーバーレイとして適用され、各ビューに分かりやすく視覚化されます。 \
+詳しくは [遅延の管理](/quick-tips/managing-delays/) をご覧ください。
 
-## Sharing the rundown
+## 進行表の共有
 
-As the show runner / Ontime operator, we expect that you will be at home in the [Editor](/interface/production/app-editor/) view.
+ショーディレクターや Ontime オペレーターは主に [エディタ (Editor)](/interface/production/app-editor/) 画面で作業します。
 
-However, Ontime is more useful as a collaboration tool for your team.
+しかし、Ontime の真の強みはチーム間のコラボレーションにあります。
 
-The [Cuesheet](/interface/production/cuesheet/) and [Operator](/interface/production/operator/) views are made for realtime collaboration with your team. \
-Once you have created the rundown, you can share a link to Ontime to allow others to see the rundown and contribute with their department data.
+[キューシート (Cuesheet)](/interface/production/cuesheet/) ビューや [オペレーター (Operator)](/interface/production/operator/) ビューは、チームメンバーがリアルタイムで情報共有・編集を行うために設計されています。 \
+進行表を作成したら共有リンクを発行することで、他部署のスタッフが進行を確認したり、各自の担当データを直接入力したりできます。
 
-### Exporting
+### エクスポート
 
-If instead you are looking to export the rundown, either to print or archive, please consider using the [Excel export](/quick-tips/import-export/) or the [Google Sheet](/features/import-spreadsheet-gsheet/) features.
+印刷やアーカイブ用途で進行表を出力したい場合は、[Excel エクスポート](/quick-tips/import-export/) や [Google スプレッドシート連携](/features/import-spreadsheet-gsheet/) を活用してください。
 
-Ontime does not currently have a in-app printing feature.\
-The best way to achieve this is by exporting the rundown to an Excel file and styling and printing as you need.
+Ontime 自体には直接の印刷レイアウト機能はありませんが、Excel 形式でエクスポートすることで、現場の好みのレイアウトやフォントで印刷・共有できます。

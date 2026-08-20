@@ -1,27 +1,26 @@
 ---
-title: Configuring views
-description: Configuring views with URL Aliases
+title: ビューのカスタマイズと設定
+description: URLパラメーターを使用した各ビューの表示カスタマイズ
 ---
 
-Most views are configurable using URL parameters. \
-The only exceptions are the [editor](/interface/production/app-editor) and [cuesheet](/interface/production/cuesheet) views.
+Ontime のほとんどのビュー画面は、URL クエリパラメーターを使って柔軟に表示をカスタマイズできます。 \
+（※[エディタ](/interface/production/app-editor/) ビューおよび [キューシート](/interface/production/cuesheet/) ビューを除く）
 
 ![Configure Ontime view](../../../assets/screenshots/features/timer__params.png)
 
-This means you can share a link which includes the complete customisation of a view. This feature pairs great with the [URL Presets feature](/features/url-presets).
+各端末専用にカスタマイズした URL リンクを作成して共有できるため、[URLプリセット機能](/features/url-presets/) と組み合わせると非常に便利です。
 
-You can open the customisation panel in any supported view via the View Parameters Editor (shown in the image) opened using the Settings button in the interface.
+各ビュー画面の右上に表示される **設定（歯車アイコン）** をクリックすると、ビューパラメーターエディタ（上記画像）が開き、GUI 上で直感的に表示要素のオン/オフやレイアウトを調整できます。
 
-## Time formatting
-By default all clocks in Ontime are in __24 hour format__, eg: `15:10:10`. \
-In the __Application Settings__, you can change the default to a __12 hour format__, so it would be `03:10:10`.
+## 時刻フォーマットの設定
+Ontime の時計表示はデフォルトで **24時間表記**（例: `15:10:10`）です。 \
+**アプリケーション設定** でデフォルトを **12時間表記**（例: `03:10:10 PM`）に変更できます。
 
-In addition, some views will also allow configuring the format of the auxiliary times (ie: schedules and clocks). \
-See below some common format strings. You can find more options for customisation in the formatting library documentation LINK.
+さらに、一部のビューでは補助時刻（スケジュール時刻や時計）の表示形式を個別にカスタマイズできます：
 
-
-| Format                | Result                                          | 
+| 指定フォーマット      | 表示結果                                        | 
 | :-------------------- | :---------------------------------------------- |
-| `HH:mm:ss`            | `15:10:10`     (default for 24 hour format)     |
-| `hh:mm:ss a`          | `03:10:10 PM`  (default for 12 hour format)     |
+| `HH:mm:ss`            | `15:10:10`     (24時間表記のデフォルト)        |
+| `hh:mm:ss a`          | `03:10:10 PM`  (12時間表記のデフォルト)        |
 | `HH:mm`               | `15:10`                                         |
+

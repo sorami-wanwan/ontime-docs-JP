@@ -1,265 +1,258 @@
 ---
 title: OSC API
-description: Documentation for the OSC API
+description: OSC (Open Sound Control) プロトコル API ドキュメント
 ---
 
-The OSC and WebSocket APIs allow for low latency communication to Ontime server.
+OSC および WebSocket API を使用すると、Ontime サーバーと極めて低いレイテンシーで通信できます。
 
+:::note[OSC の設定]
+OSC API を利用するには、`エディタ` -> `設定` -> `オートメーション` で OSC 機能を有効化し、受信ポート（デフォルト: 8888）を設定する必要があります。
 
-:::note[Using OSC]
-To use the OSC API, you will need to configure the feature in `Editor` -> `Settings` -> `Automation`.
+OSC プロトコルの性質上、Ontime からの状態フィードバックを受け取るには、オートメーション機能を使って Ontime と外部機器の双方でメッセージ送受信設定を行う必要があります。
 
-Due to the nature of the protocol, for getting feedback from OSC you will need to configure a feedback loop in both Ontime and your other software/devices.
-
-You can monitor the messages received using the **Network log** in  `Editor` -> `Network` -> `Event log`.
+受信した OSC メッセージは、`エディタ` -> `ネットワーク` -> `イベントログ` の **ネットワークログ** でリアルタイムに監視できます。
 :::
 
-## Change event
+## イベントの変更 (Change event)
 ```bash
 /ontime/change/<event-id>/<field> <new-value>
 ```
 
-The change endpoint allows changing some of the properties of a given event (below). \
-The request should contain a patch of the event to be changed, along with the ID of the event to change.
+change エンドポイントを使用すると、指定したイベントの各プロパティ（下記）を変更できます。 \
+変更対象のイベント ID と、変更したいフィールド名を指定して送信します。
 
-You can change any field in an event using this endpoint. See below a description of expected values.
-
-| Property      | Value type                                                                                                |
+| プロパティ名  | 値の型 / 設定値                                                                                          |
 | :------------ | :-------------------------------------------------------------------------------------------------------- |
-| `title`       | string                                                                                                    |
-| `note`        | string                                                                                                    |
-| `cue`         | string (value should be kept under 8 characters)                                                          || `skip`        | boolean                                                                                                   |
-| `colour`      | string (# hex colour or [named css colour](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)) |
-| `custom`      | target the specific custom field with `custom:<fieldname>`                                                |
-| `timeWarning` | number (in milliseconds)                                                                                       |
-| `timeDanger`  | number (in milliseconds)                                                                                       |
-| `endAction`   | string (none / load-next / play-next)                                                              |
-| `timerType`   | string (count-down / count-up / clock / none)                                                             |
-| `duration`    | number (in milliseconds)                                                                                       |
-| `timeStart`   | number (in milliseconds)                                                                                       |
-| `timeEnd`     | number (in milliseconds)                                                                                       |
+| `title`       | 文字列 (string)                                                                                          |
+| `note`        | 文字列 (string)                                                                                          |
+| `cue`         | 文字列 (string: 8文字以内を推奨)                                                                         |
+| `skip`        | 真偽値 (boolean)                                                                                          |
+| `colour`      | 文字列 (#16進数カラーコード または [CSSカラー名](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)) |
+| `custom`      | `custom:<フィールド名>` で特定のカスタムフィールドを指定                                                 |
+| `timeWarning` | 数値 (ミリ秒)                                                                                            |
+| `timeDanger`  | 数値 (ミリ秒)                                                                                            |
+| `endAction`   | 文字列 (`none` / `load-next` / `play-next`)                                                              |
+| `timerType`   | 文字列 (`count-down` / `count-up` / `clock` / `none`)                                                     |
+| `duration`    | 数値 (ミリ秒)                                                                                            |
+| `timeStart`   | 数値 (ミリ秒)                                                                                            |
+| `timeEnd`     | 数値 (ミリ秒)                                                                                            |
 
-:::caution
-Changing the properties `skip` `endAction` `duration` `timeStart` `timeEnd` \
-cause the rundown to be recalculated and writing to them is therefore throttled
+:::caution[注意]
+`skip`、`endAction`、`duration`、`timeStart`、`timeEnd` の各プロパティを変更すると、進行表全体の再計算が行われるため、連続した大量書き込みにはスロットリング（流量制限）が適用されます。
 :::
 
-### Example: change title of event
-**OSC Message**
+### 例: イベントタイトルの変更
+**OSC メッセージ**
 ```bash
 /ontime/change/<event-id>/title <new-value>
 ```
 
-### Example: change a custom field
-The custom field must exist in the project to be accepted by the API. \
-See more on [custom fields](/features/custom-fields)
+### 例: カスタムフィールドの変更
+カスタムフィールドを変更するには、事前にプロジェクト設定でそのフィールドが作成されている必要があります。 \
+詳しくは [カスタムフィールド](/features/custom-fields/) をご覧ください。
 
-**OSC Message**
+**OSC メッセージ**
 ```bash
 /ontime/change/<event-id>/custom:<field-name> <new-value>
 ```
 
-## Message
-The following endpoints allow controlling the messages Ontime sends to the stage timer view. \
-The payload response is the current state of the message data.
+## メッセージの制御 (Message)
+ステージタイマー画面に表示するメッセージを制御するエンドポイントです。
 
-### Example: change the secondary message text
+### 例: セカンダリメッセージ（サブメッセージ）のテキスト変更
 
-**OSC Message**
+**OSC メッセージ**
 ```bash
-# Note that this will set the text, however setting its visibility is a separate operation.
-# See below
+# ※テキストのみを設定します。表示の切り替えは別操作となります（下記参照）。
 /ontime/message/secondary <new-text>
 ```
 
-### Example: secondary source in the stage timer view
-**OSC Message**
-```bash title="Show auxiliary timer as secondary field"
+### 例: ステージタイマー画面のセカンダリソース切り替え
+**OSC メッセージ**
+```bash title="AUXタイマーをサブフィールドに表示"
 /ontime/message/timer/secondarySource 'aux'
 ```
 
-**OSC Message**
-```bash title="Show secondary message as secondary field"
+**OSC メッセージ**
+```bash title="セカンダリメッセージをサブフィールドに表示"
 /ontime/message/timer/secondarySource 'secondary'
 ```
 
-**OSC Message**
-```bash title="Hide secondary field"
-# Note: The secondary source can be `aux` or `secondary`, any other value will assign the property to null (ie: off)
+**OSC メッセージ**
+```bash title="サブフィールドを非表示にする"
+# ※`aux` または `secondary` 以外の値を送ると非表示（null）になります
 /ontime/message/timer/secondarySource 'off'
 ```
 
-### Example: blackout timer screens
-You can remotely blackout every screen that is in the stage timer view.
+### 例: タイマー画面のブラックアウト（暗転）
+ステージタイマー画面全体を一括で暗転（ブラックアウト）させることができます。
 
-**OSC Message**
-```bash title="Blackout timer screen"
+**OSC メッセージ**
+```bash title="タイマー画面をブラックアウト"
 /ontime/message/timer/blackout true
 ```
 
-**OSC Message**
-```bash title="Disable timer screen blackout"
+**OSC メッセージ**
+```bash title="ブラックアウトを解除"
 /ontime/message/timer/blackout false
 ```
 
+## プレイバック制御 (Playback)
+Ontime の再生、停止、一時停止などの再生動作を制御します。
 
-## Playback
-The following endpoints allow controlling the Ontime's playback.
+## イベントの再生開始 (Start)
 
-## Start event
-
-### Start loaded event
-**OSC Message**
+### ロード中のイベントを開始
+**OSC メッセージ**
 ```bash
 /ontime/start
 ```
 
-### Start event at index
-**OSC Message**
+### 指定インデックスのイベントを開始
+**OSC メッセージ**
 ```bash
 /ontime/start/index <event-index>
 ```
 
-### Start event with ID
-**OSC Message**
+### 指定 ID のイベントを開始
+**OSC メッセージ**
 ```bash
 /ontime/start/id <event-id>
 ```
 
-### Start event with cue
-**OSC Message**
+### 指定キューのイベントを開始
+**OSC メッセージ**
 ```bash
 /ontime/start/cue <event-cue>
 ```
 
-### Start next event
-**OSC Message**
+### 次のイベントを開始
+**OSC メッセージ**
 ```bash
 /ontime/start/next
 ```
 
-### Start previous event
-**OSC Message**
+### 前のイベントを開始
+**OSC メッセージ**
 ```bash
 /ontime/start/previous
 ```
 
-## Pause running timer
-**OSC Message**
+## タイマーの一時停止 (Pause)
+**OSC メッセージ**
 ```bash
 /ontime/pause
 ```
 
-## Load event
+## イベントのスタンバイ / ロード (Load)
 
-### Load event at index
-**OSC Message**
+### 指定インデックスのイベントをロード
+**OSC メッセージ**
 ```bash
 /ontime/load/index <event-index>
 ```
 
-### Load event with ID
-**OSC Message**
+### 指定 ID のイベントをロード
+**OSC メッセージ**
 ```bash
 /ontime/load/id <event-id>
 ```
 
-
-### Load event with cue
-**OSC Message**
+### 指定キューのイベントをロード
+**OSC メッセージ**
 ```bash
 /ontime/load/cue <event-cue>
 ```
 
-### Load next event
-**OSC Message**
+### 次のイベントをロード
+**OSC メッセージ**
 ```bash
 /ontime/load/next
 ```
 
-### Load previous event
-**OSC Message**
+### 前のイベントをロード
+**OSC メッセージ**
 ```bash
 /ontime/load/previous
 ```
 
-## Reload current event
-**OSC Message**
+## 現在イベントの再ロード (Reload)
+**OSC メッセージ**
 ```bash
 /ontime/reload
 ```
 
-## Stop playback
-**OSC Message**
+## 再生の停止 (Stop)
+**OSC メッセージ**
 ```bash
 /ontime/stop
 ```
 
-## Activate Roll mode
-**OSC Message**
+## ロールモードの有効化 (Roll)
+**OSC メッセージ**
 ```bash
 /ontime/roll
 ```
 
-## User added time
-### Add time
-**OSC Message**
+## 手動での時間追加・短縮 (Add/Remove Time)
+### 時間を追加
+**OSC メッセージ**
 ```bash
-/ontime/addtime/add <value-in-milliseconds>
+/ontime/addtime/add <ミリ秒単位の値>
 ```
 
-### Remove time
-**OSC Message**
+### 時間を短縮
+**OSC メッセージ**
 ```bash
-/ontime/addtime/remove <value-in-milliseconds>
+/ontime/addtime/remove <ミリ秒単位の値>
 ```
 
-## Auxiliary timer
+## AUXタイマー（補助タイマー）
 
-Ontime provides an [auxiliary timer](/features/aux-timer) which does not affect the current playback. \
-This can be controlled using the API as shown below
+進行表の再生に影響を与えない [AUXタイマー](/features/aux-timer/) を OSC から制御できます。
 
-### Set auxiliary timer duration
-**OSC Message**
+### AUXタイマーの設定時間を設定
+**OSC メッセージ**
 ```bash
-/ontime/auxtimer/1/duration <value-in-milliseconds>
+/ontime/auxtimer/1/duration <ミリ秒単位の値>
 ```
 
-### Set auxiliary timer direction
-Auxiliary timer can count up or count down.
+### AUXタイマーのカウント方向を設定
+カウントアップまたはカウントダウンを指定します。
 
-#### Set auxiliary timer to count up
-**OSC Message**
+#### カウントアップに設定
+**OSC メッセージ**
 ```bash
 /ontime/auxtimer/1/direction count-up
 ```
 
-#### Set auxiliary timer to count down
-**OSC Message**
+#### カウントダウンに設定
+**OSC メッセージ**
 ```bash
 /ontime/auxtimer/1/direction count-down
 ```
 
-### Start auxiliary timer
-**OSC Message**
+### AUXタイマーの開始
+**OSC メッセージ**
 ```bash
 /ontime/auxtimer/1/start
 ```
 
-### Pause auxiliary timer
-**OSC Message**
+### AUXタイマーの一時停止
+**OSC メッセージ**
 ```bash
 /ontime/auxtimer/1/pause
 ```
 
-### Stop auxiliary timer
-**OSC Message**
+### AUXタイマーの停止
+**OSC メッセージ**
 ```bash
 /ontime/auxtimer/1/stop
 ```
 
-### Add / remove time to auxiliary timer
-**OSC Message**
+### AUXタイマーへの時間追加・短縮
+**OSC メッセージ**
 ```bash
-/ontime/auxtimer/1/addtime <value-in-milliseconds>
+/ontime/auxtimer/1/addtime <ミリ秒単位の値>
 ```
+

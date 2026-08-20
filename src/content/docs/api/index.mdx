@@ -1,30 +1,31 @@
 ---
-title: Ontime APIs
-description: Ontime APIs, Feedback and control
+title: Ontime API 概要
+description: Ontime の各種 API、フィードバックと制御
 ---
 
-Ontime distinguishes data into two main types
+Ontime のデータは大きく分けて以下の 2 種類に分類されます：
 
-#### Project data
-This is data kept with the project that is persisted across app shutdown, it includes your settings and rundown. \
-The persisted data changes less often and is transmitted over HTTP
+#### プロジェクトデータ (Project data)
+アプリを終了・再起動しても保持される永続的な設定や進行表データです。 \
+変更頻度は比較的低く、主に HTTP エンドポイント経由で送受信されます。
 
-#### Runtime data
-This is data that results from your interaction with the app, it includes timers and playback state. \
-The runtime data changes potentially very often. This is transmitted over WebSocket, but can be also consumed and modified over any of the supported protocols (OSC, WebSocket and HTTP).
+#### ランタイムデータ (Runtime data)
+ユーザーの操作やタイマーの進行によってリアルタイムに変化するデータ（タイマー値、再生状態、オフセットなど）です。 \
+非常に高い頻度で更新され、WebSocket でストリーミング配信されるほか、サポートされているすべてのプロトコル（OSC、WebSocket、HTTP）で取得・変更が可能です。
 
-## Get project data
-Please follow the link to the documentation on the HTTP endpoints that provide access to the project data.
+## プロジェクトデータの取得
+プロジェクトデータを取得するための HTTP エンドポイントについては、[プロジェクトデータのドキュメント](/api/data/project-data/) を参照してください。
 
-## Control Ontime
-The OSC, Websocket and HTTP API allow for low latency communication to Ontime. \
-The APIs for the difference protocols are mostly feature compatible, so it is up to you to choose the most convenient protocol.
+## 外部からの Ontime 制御
+OSC、WebSocket、HTTP の各 API を使用して、Ontime サーバーと低レイテンシーで通信・制御できます。 \
+プロトコル間の機能差はほとんどないため、利用する外部機器や制作環境（vMix、Qlab、disguise、OBS、TouchDesigner など）に合わせて最適なプロトコルを選択できます。
 
-You can find the documentation for the individual protocols by following the links
-- [OSC](/api/protocols/osc)
-- [WebSockets](/api/protocols/websockets)
-- [HTTP](/api/protocols/http)
+各プロトコルの詳細ドキュメント：
+- [OSC API](/api/protocols/osc/)
+- [WebSocket API](/api/protocols/websockets/)
+- [HTTP API](/api/protocols/http/)
 
-## Control from Ontime
-You can also leverage the **automation feature** to distribute the runtime data from Ontime or control other software. \
-More information is available [in the documentation for the automation feature](/api/automation/).
+## Ontime からの外部制御（オートメーション）
+Ontime の **オートメーション機能** を使用して、Ontime のランタイムデータを外部システムに送信したり、イベントの進行に合わせて他のソフトウェア・照明・音響機器を自動制御したりできます。 \
+詳しくは [オートメーション機能のドキュメント](/api/automation/) をご覧ください。
+

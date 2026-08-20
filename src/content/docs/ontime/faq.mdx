@@ -1,25 +1,25 @@
 ---
-title: FAQ
-description: Frequently asked questions
+title: よくある質問 (FAQ)
+description: よくある質問と回答
 ---
 
-## Can I run Ontime in old Intel Apple devices
-Yes! Ontime has separate distributions for Intel Silicon and Apple Intel (x64) processors. Make sure to double-check you are downloading the correct version \
-Download links can be found in [the website](https://www.getontime.no/).
+## 古い Intel Mac でも Ontime を実行できますか？
+はい、利用可能です！ Ontime は Apple Silicon 用と Intel (x64) プロセッサ用のビルドを個別に提供しています。お使いの Mac の環境に合わせたバージョンをダウンロードしてください。 \
+ダウンロードリンクは [ontime-JP リリース](https://github.com/sorami-wanwan/ontime-JP/releases) または [公式サイト](https://www.getontime.no/) から入手できます。
 
-## Which Linux version do I need
-Ontime distributes a few Linux packages depending on your architecture.
-- Are you on a **normal PC / desktop**, download the [64-bit AppImage](https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-x86_64.AppImage)
-- Are you on a **Raspberry Pi 4 or newer**, download the [Arm 64-bit AppImage](https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-arm64.AppImage)
-- Are you on a **older Raspberry Pi**, download the [Arm 32-bit AppImage](https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-armv7l.AppImage)
+## どの Linux バージョンを選べばよいですか？
+Ontime は CPU アーキテクチャに合わせて複数の Linux パッケージを提供しています。
+- **一般的な PC / デスクトップ (x86_64)**: [64-bit AppImage (x86_64)](https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-linux-x86_64.AppImage) をダウンロード
+- **Raspberry Pi 4 以降 (64-bit ARM)**: [Arm 64-bit AppImage (arm64)](https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-linux-arm64.AppImage) をダウンロード
+- **古い Raspberry Pi (32-bit ARM)**: [Arm 32-bit AppImage (armv7l)](https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-linux-armv7l.AppImage) をダウンロード
 
-## How do I shutdown Ontime?
-When running the app from the desktop installer, closing Ontime's window does not shutdown the server process. \
-This is a safety feature to prevent accidental shutdowns.
+## Ontime をシャットダウンするには？
+デスクトップアプリとして実行している場合、Ontime のウィンドウを閉じるだけではサーバープロセスは停止しません。 \
+これは誤操作による不意のシャットダウンを防ぐための安全設計です。
 
-To completely shutdown Ontime, navigate to `Editor` -> `Settings` -> `Shutdown`.
+Ontime を完全にシャットダウンするには、`エディタ` -> `設定` -> `シャットダウン` を選択してください。
 
 :::note
-Ontime can only be shutdown from the machine it is running in. \
-If you are in the correct machine, and still see the disabled button with the warning message, please use the localhost address in the browser or the app window instead.
+Ontime のシャットダウンは、アプリを実行しているローカルマシンからのみ実行できます。 \
+実行中のマシン上で操作しているにもかかわらずボタンが無効化されて警告が表示される場合は、ブラウザで `localhost` アドレスを使用するか、アプリのウィンドウ内から操作してください。
 :::

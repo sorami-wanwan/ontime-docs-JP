@@ -1,44 +1,42 @@
 ---
-title: WebSockets API
-description: Documentation for the WebSockets API
+title: WebSocket API
+description: WebSocket プロトコル API ドキュメント
 ---
 
-The OSC and WebSocket APIs allow for low latency communication to Ontime server. 
+WebSocket API を使用すると、Ontime サーバーと双方向かつ極めて低レイテンシーで通信できます。
 
-Since the WebSocket API is used by Ontime, this cannot be configured by the user other than changing its port.
-
-The WebSocket server is at the same IP address and port as the main application at 
+WebSocket サーバーはメインアプリケーションと同じ IP アドレスおよびポートで動作します：
 ```bash
-ws://<ip-address>:<port>/ws
+ws://<IPアドレス>:<ポート番号>/ws
 ```
 
 :::note
-Any WebSocket client that connects to ontime, will receive a snapshot of the application state as defined in the [Runtime data](/api/data/runtime-data).
+Ontime に接続したすべての WebSocket クライアントは、接続時に [ランタイムデータ](/api/data/runtime-data/) で定義されている現在のアプリケーション状態のスナップショットを受信します。
 :::
 
-## State
+## 状態の取得 (State)
 
-### Get Ontime version
-**Request** 
+### Ontime バージョンの取得
+**リクエスト** 
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {"tag": "version"}
 ```
 
-**Response**
+**レスポンス**
 ```ts
 {"tag":"version","payload":"4.0.0"}
 ```
 
-### Get Ontime runtime state
-**Request**
+### ランタイム状態の取得 (ポーリング)
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {"tag": "poll"}
 ```
 
-**Response** \
-The response of a poll request is a [runtime data object](/api/data/runtime-data)
+**レスポンス** \
+レスポンスには [ランタイムデータオブジェクト](/api/data/runtime-data/) が返されます。
 ```ts
 {
     "tag": "poll", 
@@ -46,113 +44,103 @@ The response of a poll request is a [runtime data object](/api/data/runtime-data
 }
 ```
 
-## Change event
-```bash
-<localhost:4001>/api/change/<event-id>/<property>/<value>
-```
+## イベントの変更 (Change event)
 
-The change endpoint allows changing some of the properties of a given event (below). \
-The request should contain a patch of the event to be changed, along with the ID of the event to change.
+change エンドポイントを使用すると、指定したイベントの各プロパティ（下記）を変更できます。
 
-You can change any field in an event using this endpoint. See below a description of expected values.
-
-| Property      | Value type                                                                                                |
+| プロパティ名  | 値の型 / 設定値                                                                                          |
 | :------------ | :-------------------------------------------------------------------------------------------------------- |
-| `title`       | string                                                                                                    |
-| `note`        | string                                                                                                    |
-| `cue`         | string (value should be kept under 8 characters)                                                          |
-| `skip`        | boolean                                                                                                   |
-| `colour`      | string (# hex colour or [named css colour](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)) |
-| `custom`      | target the specific custom field with `custom:<fieldname>`                                                |
-| `timeWarning` | number (in milliseconds)                                                                                       |
-| `timeDanger`  | number (in milliseconds)                                                                                       |
-| `endAction`   | string (none / load-next / play-next)                                                                     |
-| `timerType`   | string (count-down / count-up / clock / none)                                                             |
-| `duration`    | number (in milliseconds)                                                                                       |
-| `timeStart`   | number (in milliseconds)                                                                                       |
-| `timeEnd`     | number (in milliseconds)                                                                                       |
+| `title`       | 文字列 (string)                                                                                          |
+| `note`        | 文字列 (string)                                                                                          |
+| `cue`         | 文字列 (string: 8文字以内を推奨)                                                                         |
+| `skip`        | 真偽値 (boolean)                                                                                          |
+| `colour`      | 文字列 (#16進数カラーコード または [CSSカラー名](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)) |
+| `custom`      | `custom:<フィールド名>` で特定のカスタムフィールドを指定                                                 |
+| `timeWarning` | 数値 (ミリ秒)                                                                                            |
+| `timeDanger`  | 数値 (ミリ秒)                                                                                            |
+| `endAction`   | 文字列 (`none` / `load-next` / `play-next`)                                                              |
+| `timerType`   | 文字列 (`count-down` / `count-up` / `clock` / `none`)                                                     |
+| `duration`    | 数値 (ミリ秒)                                                                                            |
+| `timeStart`   | 数値 (ミリ秒)                                                                                            |
+| `timeEnd`     | 数値 (ミリ秒)                                                                                            |
 
-:::caution
-Changing the properties `skip` `endAction` `duration` `timeStart` `timeEnd` \
-cause the rundown to be recalculated and writing to them is therefore throttled
+:::caution[注意]
+`skip`、`endAction`、`duration`、`timeStart`、`timeEnd` の各プロパティを変更すると、進行表全体の再計算が行われるため、連続した大量書き込みにはスロットリング（流量制限）が適用されます。
 :::
 
-### Example: change title of event
-**Request**
+### 例: イベントタイトルの変更
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "change", 
     "payload": {
         "<event-id>": {
-            "title": "new-text"
+            "title": "新しいタイトル"
         }
     }
 }
 ```
 
-**Response**
+**レスポンス**
 ```ts
 {
   "tag": "change",
   "payload": {
     "<event-id>": {
-      "title": "new-text"
+      "title": "新しいタイトル"
     }
   }
 }
 ```
 
-### Example: change a custom field
-The custom field must exist in the project to be accepted by the API. \
-See more on [custom fields](/features/custom-fields)
+### 例: カスタムフィールドの変更
+カスタムフィールドを変更するには、事前にプロジェクト設定でそのフィールドが作成されている必要があります。
 
-**Request**
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "change", 
     "payload": {
         "<event-id>": {
-            "custom:<field-name>": "new-text"
+            "custom:<field-name>": "新しい値"
         }
     }
 }
 ```
-**Response**
+**レスポンス**
 ```ts
 {
   "tag": "change",
   "payload": {
     "<event-id>": {
-      "custom:<field-name>": "new-text"
+      "custom:<field-name>": "新しい値"
     }
   }
 }
 ```
 
-## Message
-The following endpoints allow controlling the messages Ontime sends to the timer view. \
-The payload response is the current state of the message data.
+## メッセージの制御 (Message)
 
-### Example: change the secondary message text
-**Request**
+### 例: セカンダリメッセージ（サブメッセージ）のテキスト変更
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "message", 
     "payload": {
-        "secondary": "new text"
+        "secondary": "新しいメッセージ"
     }
 }
 ```
 
-**Response**
+**レスポンス**
 ```ts
 {
     "tag":"message",
     "payload": {
-        "secondary": "new text",
+        "secondary": "新しいメッセージ",
         "timer": {
             "text": "",
             "visible": true,
@@ -164,10 +152,10 @@ Message: {
 }
 ```
 
-### Example: secondary source in the stage timer view
-**Request**
-```bash title="Show auxiliary timer as secondary field"
-Target: ws://<ip-address>:<port>/ws
+### 例: ステージタイマー画面のセカンダリソース切り替え
+**リクエスト**
+```bash title="AUXタイマーをサブフィールドに表示"
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "message", 
     "payload": {
@@ -178,9 +166,9 @@ Message: {
 }
 ```
 
-**Request**
-```bash title="Show secondary message as secondary field"
-Target: ws://<ip-address>:<port>/ws
+**リクエスト**
+```bash title="セカンダリメッセージをサブフィールドに表示"
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "message", 
     "payload": {
@@ -191,10 +179,10 @@ Message: {
 }
 ```
 
-**Request**
-```bash title="Hide secondary field"
-# Note: The secondary source can be `aux` or `secondary`, any other value will assign the property to null (ie: off)
-Target: ws://<ip-address>:<port>/ws
+**リクエスト**
+```bash title="サブフィールドを非表示にする"
+# ※`aux` または `secondary` 以外の値を送ると非表示（null）になります
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "message", 
     "payload": {
@@ -205,11 +193,11 @@ Message: {
 }
 ```
 
-**Response**
+**レスポンス**
 ```ts
 {
     "payload": {
-        "secondary": "new text",
+        "secondary": "新しいメッセージ",
         "timer": {
             "text": "",
             "visible": true,
@@ -221,13 +209,10 @@ Message: {
 }
 ```
 
-### Example: blackout stage timer screens
-You can remotely blackout every screen that is in the stage timer view.
-
-**Request**
-```bash title="Blackout timer screen"
-# Note: The secondary source can be `aux` or `secondary`, any other value will assign the property to null (ie: off)
-Target: ws://<ip-address>:<port>/ws
+### 例: タイマー画面のブラックアウト（暗転）
+**リクエスト**
+```bash title="タイマー画面をブラックアウト"
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "message", 
     "payload": {
@@ -238,9 +223,9 @@ Message: {
 }
 ```
 
-**Request**
-```bash title="Disable timer screen blackout"
-Target: ws://<ip-address>:<port>/ws
+**リクエスト**
+```bash title="ブラックアウトを解除"
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "message", 
     "payload": {
@@ -251,7 +236,7 @@ Message: {
 }
 ```
 
-**Response**
+**レスポンス**
 ```ts
 {
     "payload": {
@@ -265,26 +250,23 @@ Message: {
         },
     }
 }
-
 ```
 
-## Playback
-The following endpoints allow controlling the Ontime's playback. \
-The payload response is the current state of the message data
+## プレイバック制御 (Playback)
 
-## Start event
+## イベントの再生開始 (Start)
 
-### Start loaded event
-**Request**
+### ロード中のイベントを開始
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {"tag": "start"}
 ```
 
-### Start event at index
-**Request**
+### 指定インデックスのイベントを開始
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "start", 
     "payload": {
@@ -293,10 +275,10 @@ Message: {
 }
 ```
 
-### Start event with ID
-**Request**
+### 指定 ID のイベントを開始
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "start", 
     "payload": {
@@ -305,10 +287,10 @@ Message: {
 }
 ```
 
-### Start event with cue
-**Request**
+### 指定キューのイベントを開始
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "start", 
     "payload": {
@@ -317,39 +299,39 @@ Message: {
 }
 ```
 
-### Start next event
-**Request**
+### 次のイベントを開始
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
   "tag": "start",    
   "payload": "next"
 }
 ```
 
-### Start previous event
-**Request**
+### 前のイベントを開始
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
   "tag": "start",    
   "payload": "previous"
 }
 ```
 
-## Pause running timer
-**Request**
+## タイマーの一時停止 (Pause)
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: { "tag": "pause" }
 ```
 
-## Load event
+## イベントのスタンバイ / ロード (Load)
 
-### Load event at index
-**Request**
+### 指定インデックスのイベントをロード
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "load", 
     "payload": {
@@ -358,10 +340,10 @@ Message: {
 }
 ```
 
-### Load event with ID
-**Request**
+### 指定 ID のイベントをロード
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "load", 
     "payload": {
@@ -370,10 +352,10 @@ Message: {
 }
 ```
 
-### Load event with cue
-**Request**
+### 指定キューのイベントをロード
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "load", 
     "payload": {
@@ -382,103 +364,102 @@ Message: {
 }
 ```
 
-### Load next event
-**Request**
+### 次のイベントをロード
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
   "tag": "load",    
   "payload": "next"
 }
 ```
 
-### Load previous event
-**Request**
+### 前のイベントをロード
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
   "tag": "load",    
   "payload": "previous"
 }
 ```
 
-## Reload current event
-**Request**
+## 現在イベントの再ロード (Reload)
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
   "tag": "reload"  
 }
 ```
 
-## Stop playback
+## 再生の停止 (Stop)
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
   "tag": "stop"  
 }
 ```
 
-## Activate Roll mode
-**Request**
+## ロールモードの有効化 (Roll)
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
   "tag": "roll"  
 }
 ```
 
-## User added time
-### Add time
-**Request**
+## 手動での時間追加・短縮 (Add/Remove Time)
+### 時間を追加
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "addtime",
     "payload": {
-        "add": <value-in-milliseconds>
+        "add": <ミリ秒単位の値>
     }
 }
 ```
 
-### Remove time
-**Request**
+### 時間を短縮
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "addtime",
     "payload": {
-        "remove": <value-in-milliseconds>
+        "remove": <ミリ秒単位の値>
     }
 }
 ```
 
-## Auxiliary timer
+## AUXタイマー（補助タイマー）
 
-Ontime provides an [auxiliary timer](/features/aux-timer) which does not affect the current playback. \
-This can be controlled using the API as shown below
+進行表の再生に影響を与えない [AUXタイマー](/features/aux-timer/) を WebSocket から制御できます。
 
-### Set auxiliary timer duration
-**Request**
+### AUXタイマーの設定時間を設定
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "auxtimer",
     "payload": {
         "1": {
-            "duration": <value-in-milliseconds>
+            "duration": <ミリ秒単位の値>
         }
     }
 }
 ```
 
-### Set auxiliary timer direction
-Auxiliary timer can count up or count down.
+### AUXタイマーのカウント方向を設定
+カウントアップまたはカウントダウンを指定します。
 
-#### Set auxiliary timer to count up
-**Request**
+#### カウントアップに設定
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "auxtimer",
     "payload": {
@@ -489,10 +470,10 @@ Message: {
 }
 ```
 
-#### Set auxiliary timer to count down
-**Request**
+#### カウントダウンに設定
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "auxtimer",
     "payload": {
@@ -503,10 +484,10 @@ Message: {
 }
 ```
 
-### Start auxiliary timer
-**Request**
+### AUXタイマーの開始
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "auxtimer",
     "payload": {
@@ -515,10 +496,10 @@ Message: {
 }
 ```
 
-### Pause auxiliary timer
-**Request**
+### AUXタイマーの一時停止
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "auxtimer",
     "payload": {
@@ -527,10 +508,10 @@ Message: {
 }
 ```
 
-### Stop auxiliary timer
-**Request**
+### AUXタイマーの停止
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "auxtimer",
     "payload": {
@@ -539,15 +520,15 @@ Message: {
 }
 ```
 
-### Add / remove time to auxiliary timer
-**Request**
+### AUXタイマーへの時間追加・短縮
+**リクエスト**
 ```bash
-Target: ws://<ip-address>:<port>/ws
+Target: ws://<IPアドレス>:<ポート番号>/ws
 Message: {
     "tag": "auxtimer",
     "payload": {
         "1": {
-            "addtime": <value-in-milliseconds>
+            "addtime": <ミリ秒単位の値>
         }
     }
 }

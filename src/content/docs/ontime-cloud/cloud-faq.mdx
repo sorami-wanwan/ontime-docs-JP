@@ -1,57 +1,53 @@
 ---
-title: Cloud FAQ
-description: Frequently asked questions on the cloud service
+title: Cloud よくある質問 (FAQ)
+description: Ontime Cloud サービスに関するよくある質問と回答
 ---
 
-### What is a Stage
+### 「ステージ (Stage)」とは何ですか？
 
-With your **Ontime Cloud PRO** subscription, you get a default of 3 stages. \
-Each stage is a slot that allows you to run Ontime.
+**Ontime Cloud PRO** サブスクリプションでは、標準で 3 つのステージが提供されます。 \
+ステージとは、個別の Ontime インスタンスを実行できるスロット（枠）のことです。
 
-This means you can run 3 simultaneous projects, one in each stage. \
-All the stages are isolated and have their own projects, passwords, permissions and settings.
+つまり、ステージごとに 1 つずつ、最大 3 つの異なるプロジェクトを同時に実行できます。 \
+すべてのステージは完全に分離されており、個別のプロジェクトデータ、パスワード、権限、設定を持っています。
 
-### What is the difference between installing Ontime in my machine or using Ontime Cloud
+### 自身の PC にインストールする Ontime と Ontime Cloud の違いは何ですか？
 
-Ontime is a server application. \
-Ontime Cloud is a hosted version of Ontime that runs online without requiring you to manage servers, networking, or updates.
+Ontime はサーバーアプリケーションです。 \
+Ontime Cloud は、サーバー管理、ネットワーク設定、アップデート作業を行うことなく、オンライン上で即座に実行できる Ontime のマネージドホスティングサービスです。
 
-Ontime itself is a server application. When you self-host Ontime, you are responsible for running the server, exposing it on a network, and ensuring it remains reachable by collaborators. \
-This works well in controlled environments, but can be impractical when working across locations, with external teams, or under time pressure.
+自身で Ontime をローカルホストする場合、サーバーを起動し、ネットワークに公開して共同作業者がアクセスできるように維持・管理する必要があります。 \
+これは管理されたローカル環境では適していますが、複数拠点での作業、外部チームとの連携、あるいは本番直前の限られた時間の中では手間がかかる場合があります。
 
-Ontime Cloud removes this setup step by running Ontime for you.\
-Each stage is hosted online, accessible through a stable and secure URL, and available whenever you need it.\
-The Ontime software itself is unchanged.
+Ontime Cloud はサーバーのセットアップ作業を不要にし、安定した安全な URL を通じて、必要な時にいつでもアクセスできる環境を提供します。 \
+実行されている Ontime ソフトウェア自体の機能は全く同じです。
 
-### How many people can I invite to collaborate on my project
+### プロジェクトに何人まで共同作業者を招待できますか？
 
-There are no limits!
+**人数制限はありません！**
 
-We want Ontime to be as valuable as possible for your production and believe that it should be open for all your team to leverage.
+Ontime はチーム全員が活用することで最大の価値を発揮すると考えています。 \
+Ontime ではシート数やユーザー数に応じた課金は一切行っておらず、今後も行う予定はありません。
 
-Ontime does not, and will not have pricing per seat or collaborator.
+### Ontime Cloud で Companion を使用できますか？
 
-### Can I use Companion with Ontime Cloud
+**はい、使用できます！**
 
-Yes!
+Ontime Cloud はローカルの Ontime と同じ [HTTP および WebSocket API](/api/) をサポートしているため、簡単に接続先を切り替えられます。 \
+Bitfocus Companion の Ontime モジュールも通常通り動作します。
 
-Ontime Cloud supports the same [HTTP and WebSocket API](/api) as Ontime, meaning you can transfer your connections easily. \
-The Ontime Companion module also works as expected.
+Companion から Ontime Cloud への接続方法については、[Companion モジュールのガイド](/additional-notes/companion-module/#companion-から-ontime-への接続設定) を参照してください。
 
-For connecting Companion to Ontime Cloud, please follow [the guide](/additional-notes/companion-module/#connecting-to-ontime-from-ontimes-companion-module).
 
-### Can Studio customers request custom Cloud setups
+### STUDIO プランのユーザーはカスタムの Cloud 設定を依頼できますか？
 
-Yes!
+**はい、可能です！**
 
-Some Studio customers require Cloud-level setup that does not make sense as a general Ontime feature, such as:
+Studio プランのお客様向けに、一般的な機能としては提供されない以下のような Cloud レベルの個別設定を承っています：
 
-custom domains
+- カスタムドメイン
+- バニティ URL（専用の分かりやすい短縮 URL）
+- 特定のルーティングやデプロイ構成の個別カスタマイズ
 
-vanity URLs
-
-specific routing or deployment adjustments
-
-These requests are handled as optional Cloud extensions. They are scoped per request and priced separately from the Studio subscription.
-
-Availability depends on feasibility and scope.
+これらのご要望はオプションの Cloud 拡張として対応し、要件定義の上で Studio サブスクリプションとは個別にお見積もりいたします。 \
+（※実現可能性や要件のスコープにより対応可否を判断いたします）
