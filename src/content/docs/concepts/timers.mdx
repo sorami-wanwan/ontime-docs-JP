@@ -1,41 +1,42 @@
 ---
-title: Ontime Timers
-description: Planned and expected times
+title: Ontime のタイマー概念
+description: 予定時刻と完了・開始見込み時刻の仕組み
 ---
 
-Users create the rundown in a pre-production phase, where Ontime can extract schedules and total durations.
+事前準備（プリプロダクション）段階で進行表を作成すると、Ontime は各イベントのスケジュールや合計所要時間を自動計算します。
 
-At runtime, Ontime overlays the playback over the schedule to provide extra information on the rundown progress. \
-In short, we can use the schedule and the current playback to answer questions like:
+本番中（ランタイム）では、Ontime は実際の再生進行状況（プレイバック）を事前スケジュールに重ね合わせることで、進行状況に関する高度な情報を算出します。 \
+これにより、以下のような疑問にリアルタイムで回答できます：
 
-- how long until "event-x" starts?
-- are we running late?
+- 次の「イベント X」が始まるまであと何分何秒か？
+- 全体のスケジュールに対して押している（遅れている）か、巻いている（進んでいる）か？
 
-## Expected times and planned times
+## 予定時刻 (Planned) と 見込み時刻 (Expected)
 
-With these layers of information, Ontime can extract two types of schedule, **planned times** and **expected times**:
+これらの情報から、Ontime は **予定時刻（Planned times）** と **見込み時刻（Expected times）** の 2 種類のタイムラインを算出します：
 
-**Planned times** would tell you when is your event supposed to start, according to the schedule you have provided \
-**Expected times** give an expectation of when Ontime expects the event is able to start. The expected time is calculated using the current offset + the total duration of all upcoming events until that point.
+- **予定時刻 (Planned times)**: 進行表に事前設定された「本来開始・終了するはずの計画時刻」を示します。
+- **見込み時刻 (Expected times)**: 現在の実際の遅延（オフセット）や前のイベントの進行状況を加味し、Ontime が予測する「実際に開始・終了する見込み時刻」を示します。
 
 ![Rundown event](../../../assets/screenshots/editor/rundown/docs_expected.png)
 
-Considering the above screenshot of the Editor overview.
+上記のエディタ画面の番号に対応する情報は以下の通りです：
 
-**Countdown to group end**
-<div class="tag">1</div> Time until the **planned end** of the Morning session group \
-<div class="tag">2</div> Time until the **expected end** of the Morning session group
+**グループ終了までのカウントダウン**
+- <div class="tag">1</div> 「Morning session」グループの **終了予定時刻 (Planned end)** までの残り時間
+- <div class="tag">2</div> 「Morning session」グループの **終了見込み時刻 (Expected end)** までの残り時間
 
-**Countdown to flag**
-<div class="tag">3</div> Time until the **planned end** of the Session 1 flag event \
-<div class="tag">4</div> Time until the **expected end** of the Session 1 flag event
+**フラグまでのカウントダウン**
+- <div class="tag">3</div> フラグが設定された「Session 1」イベントの **終了予定時刻 (Planned end)** までの残り時間
+- <div class="tag">4</div> フラグが設定された「Session 1」イベントの **終了見込み時刻 (Expected end)** までの残り時間
 
-**End of rundown**
-<div class="tag">5</div> Rundown **planned end** time \
-<div class="tag">6</div> Rundown **expected end** time
+**進行表（全体）の終了**
+- <div class="tag">5</div> 進行表全体の **終了予定時刻 (Planned end)**
+- <div class="tag">6</div> 進行表全体の **終了見込み時刻 (Expected end)**
 
-## Time to anything
+## あらゆるエントリへのタイマー生成
 
-With the information of expected and planned times, Ontime can provide an timer to any rundown event.
+予定時刻と見込み時刻のデータを用いることで、Ontime は進行表内の任意のイベントに対してカウントダウンタイマーを生成できます。
 
-See more the [delay management documentation](/quick-tips/managing-delays/).
+詳細については [遅延の管理ドキュメント](/quick-tips/managing-delays/) をご覧ください。
+

@@ -1,20 +1,20 @@
 ---
-title: Make custom views
-description: Make and deliver custom views
+title: カスタムビューの作成
+description: 独自のカスタムビューを作成・配信する方法
 ---
 
 import { FileTree } from '@astrojs/starlight/components';
 
-Ontime broadcasts its data in the network for use by any device.
+Ontime は進行表データをネットワーク上にブロードキャスト（配信）しており、ネットワーク上のあらゆるデバイスから利用できます。
 
-You can leverage this to create custom views and control interfaces that match your needs while letting Ontime handle the distribution and time-keeping.
+この仕組みを活用して、タイマーの計測や配信は Ontime に任せつつ、自社のイベントや演出要件に完全に合わせた独自のカスタムビューや操作インターフェースを自由に作成できます。
 
-## Making custom views
-You can create a custom view using any technology of your choice. If you plan to deploy this using Ontime's infrastructure, you must leverage Javascript, CSS and HTML.
+## カスタムビューの作成方法
+カスタムビューはお好みのテクノロジーで開発できます。Ontime のサーバー機能を使って配信する場合は、JavaScript、CSS、HTML を使用します。
 
-In short, you will create a web page / application that listens to the WebSocket stream from Ontime and updates its view. 
+基本的には、Ontime の WebSocket ストリームを受信（リッスン）し、受信したデータに応じて画面をリアルタイム更新する Web ページを作成します。
 
-You can use Ontime's demo page to get started. It contains a well documented demo with explanation on how to connect and datasets.
+Ontime には開発の足がかりとして使えるデモページが同梱されています。接続方法やデータセットの扱い方が分かりやすく解説されています。
 
 ```bash
 https://cloud.getontime.no/my-stage/external/demo
@@ -22,17 +22,17 @@ https://cloud.getontime.no/my-stage/external/demo
 
 ![Ontime](../../../assets/screenshots/features/external.png)
 
-You can find [the code from the demo here](https://github.com/cpvalente/ontime/tree/master/apps/server/src/external/demo).
-Please follow here for the [documentation on the Runtime Data](/api/data/runtime-data). \
-If you are also looking to control Ontime, you can find the needed information in the [API documentation](/api/protocols/websockets).
+デモのソースコードは [GitHub リポジトリ内](https://github.com/cpvalente/ontime/tree/master/apps/server/src/external/demo) で確認できます。 \
+受信できるデータ構造については [ランタイムデータのドキュメント](/api/data/runtime-data/) を参照してください。 \
+画面から Ontime を遠隔制御したい場合は、[WebSocket API ドキュメント](/api/protocols/websockets/) をご覧ください。
 
-Alternatively, the [APIs](/api) also offer polling endpoints which can be helpful in cases where you are unable to utilise the WebSocket stream.
+また、WebSocket が使用できない環境向けに、HTTP ポーリング用の [API エンドポイント](/api/) も提供されています。
 
-## Delivering custom views
-Once you have created your custom Ontime views, you can use Ontime's infrastructure to deliver these in the network. 
+## カスタムビューの配信
+作成したカスタムビューは、Ontime の内蔵 Web サーバー機能を使ってそのままネットワーク上に配信できます。
 
-Ontime exposes any file inside its external folder to the network. \
-In the example of this folder directory, the demo interface would be available at `http://<ip-address:port>/external/demo`.
+Ontime は、サーバーの `external` フォルダ内にあるファイルをネットワーク上に公開します。 \
+例えば以下のようなフォルダ構成の場合、デモ画面は `http://<IPアドレス:ポート番号>/external/demo` からアクセスできます。
 
 <FileTree>
 - external
@@ -42,4 +42,5 @@ In the example of this folder directory, the demo interface would be available a
     - app.js
 </FileTree>
 
-To simplify the process, we already include a demo interface that demonstrates the usage.
+Ontime の設定画面（`設定` -> `カスタムビュー`）から zip ファイルまたは HTML ファイルをアップロードして手軽に追加することも可能です。
+

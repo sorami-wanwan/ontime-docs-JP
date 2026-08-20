@@ -1,47 +1,42 @@
 ---
-title: Render views in third party apps
-description: Render Ontime views in third party apps
+title: 外部アプリでのビュー描画
+description: OBS、vMix、disguise、TouchDesigner 等で Ontime ビューを表示
 ---
 
-It is possible to render Ontime output views on any computer that can access Ontime over the network. \
-Aside from a web browser, you can do this using any third-party software that can render an HTML page, such as OBS, vMix, disguise or Touchdesigner.
+Ontime の各種出力ビューは、ネットワーク経由で Web ページを描画できる任意の外部アプリケーション（OBS Studio、vMix、disguise、TouchDesigner など）にそのまま取り込んで表示できます。
 
-:::note[Background colours, keying, and transparency]
-The `timer` view offer a customizable background colour — including transparency — via the `key` option.\
-See [view configuration](/quick-tips/configuring-views).
+:::note[背景色、カラーキー、透過設定]
+`timer`（ステージタイマー）ビューでは、`key` オプションを使用して背景色や透過色（クロマキー・アルファチャンネル）を自由に指定できます。 \
+詳しくは [ビューのカスタマイズ](/quick-tips/configuring-views/) をご覧ください。
 
-For views that do not explicitly offer a customizable `key` colour, you can customize the background (or other) colours by overriding [CSS variables](/features/custom-styling) using code such as:
+明示的な `key` オプションがないビューでも、[カスタム CSS 上書き](/features/custom-styling/) を利用して背景色を変更できます：
 
 ```css
 :root {
-  --background-color-override: #00ff00;
+  --background-color-override: #00ff00; /* グリーンスクリーン用 */
 }
 ```
 :::
 
-### Example: Rendering a confidence monitor in OBS
+### 実例: OBS Studio でプロンプター・返りモニターを表示
 
 ![Lower thirds in OBS](../../../assets/screenshots/features/obs-confidence-monitor.png)
 
-You may need to distribute our stage timer view as a confidence monitor through your system, or consume it in a multiview.
+OBS Studio の **ブラウザソース (Browser Source)** を使用して、Ontime のステージタイマー画面を取り込み、配信画面のワイプやマルチビュー画面として活用できます。
 
-In OBS you can use the Browser source. You would simply need to provide OBS with the link to the page with the options you need.
+OBS に Ontime の URL（例: `http://<IPアドレス>:4001/timer`）を入力するだけで、リアルタイムなタイマーが描画されます。
 
-:::note[Ontime Cloud password]
-For users running Ontime from a password protected stage in Ontime Cloud, you wil need to create a link that contains authentication.
+:::note[Ontime Cloud でパスワード保護されたステージの場合]
+Ontime Cloud でパスワードが設定されているステージを利用する場合は、認証情報を含んだ共有リンクを生成して OBS に貼り付けます：
 
-You can achieve this by
+1. `エディタ` -> `設定` -> `共有とレポート` -> `リンクを共有` を開きます
+2. 目的のビューまたはプリセットを選択し、**認証を含める** のトグルをオンにします
+3. **共有リンクを作成** をクリックしてコピーした URL を OBS のブラウザソースに設定します
+:::
 
-1. Navigate to the `Editor` -> `Settings` -> `Sharing and reporting` -> `Share link`
-2. Select your target view or preset, and activate the `Authenticate toggle`
-3. Click the `Create share link` button and provide the link copied to your clipboard to OBS
-   :::
+### 外部アプリでの描画トラブルシューティング
 
-### Rendering issues
+Ontime は幅広いブラウザ環境に対応していますが、一部の古い CEF（Chromium Embedded Framework）を内蔵した古いメディアサーバーや配信ソフトウェアでは、画面が真っ白になり正常に描画されない場合があります。
 
-We try to keep our compatibility targets as wide as possible. \
-However some software uses older browser versions and may not be able to render Ontime's views.
-In those cases you will often see a blank page.
+その場合、Ontime の WebSocket データを直接受信してシンプルな HTML で描画する [カスタムビュー](/features/custom-views/) を作成することで、古い環境にも柔軟に対応できます。
 
-[Custom views](/features/custom-views) may be a good alternative here. \
-With custom views you can leverage Ontime's data and distribution to make a simple page that could have a wider browser support.

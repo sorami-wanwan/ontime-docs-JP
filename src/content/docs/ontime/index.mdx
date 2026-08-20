@@ -1,61 +1,65 @@
 ---
-title: Ontime
-description: Documentation for ontime
+title: Ontime について
+description: Ontime および日本語フォーク版（ontime-JP）の概要
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
-## Free open-source software for managing <mark>rundowns</mark> and <mark>event timers</mark>
+:::note[日本語フォークプロジェクト（ontime-JP）について]
+本ドキュメントおよび **ontime-JP** は、Carlos Valente 氏が主導するオープンソースプロジェクト [Ontime](https://github.com/cpvalente/ontime)（公式サイト: [www.getontime.no](https://www.getontime.no)）をベースに、個人（sorami）が日本語環境での実用性を高めるために独自にフォーク・再構築した非公式コミュニティプロジェクトです。
 
-:::tip[What is Ontime]
+**主なフォーク改良点：**
+- **日本語 UI の完全ローカライズ**: エディタ、キューシート、オペレーター画面、各種タイマー画面の日本語化
+- **日本語 IME 入力の最適化**: 日本語入力（IME）確定時の意図しないショートカットキー発火や文字化け・フォーカス不具合の解消
+- **完全な日本語ドキュメントの整備**: 全機能、各種 API、外部連携（OBS、vMix、Companion 等）の日本語マニュアル提供
 
-Ontime is a browser-based application that manages rundowns, scheduling, and cueing. \
-It supports live productions, broadcasts, and events with real-time collaboration and powerful integrations.
+プロジェクトのソースコードは [GitHub (sorami-wanwan/ontime-JP)](https://github.com/sorami-wanwan/ontime-JP) で公開されています。
+:::
 
-Ontime streamlines your production workflow by enabling real-time collaboration, managing last-minute changes, and ensuring smooth communication.
+## <mark>進行表（ランダウン）</mark>と<mark>イベントタイマー</mark>を管理するオープンソースソフトウェア
 
-You can run Ontime anywhere: \
-Install it in your machine, run it in a production network or in the cloud.
+:::tip[Ontime とは]
 
-Checkout our website to find out more [www.getontime.no](https://www.getontime.no)
+Ontime は、進行表（ランダウン）の管理、スケジュール追跡、キュー出しを行うブラウザベースのアプリケーションです。 \
+リアルタイムコラボレーションと強力な外部連携により、ライブ制作、放送、各種イベントを強力にサポートします。
+
+Ontime はリアルタイムでのチーム連携、直前の変更対応、スムーズな情報共有を可能にし、制作ワークフローを効率化します。
+
+Ontime は場所を選ばずどこでも実行できます： \
+お使いの PC にインストールしたり、制作現場のローカルネットワークやクラウド上で動作させることができます。
+
+詳細については公式サイト [www.getontime.no](https://www.getontime.no) をご覧ください。
 :::
 
 ![Ontime](../../../assets/images/ontime-overview.png)
 
 <CardGrid stagger>
-  <Card title="Multiplatform" icon="approve-check">
-    Available for Windows, MacOS, and Linux. You can also self host the
-    docker image in your own server.
+  <Card title="マルチプラットフォーム" icon="approve-check">
+    Windows、macOS、Linux で利用可能です。また、Docker イメージを使用して独自のサーバーでセルフホストすることもできます。
   </Card>
-  <Card title="In any device" icon="approve-check">
-    Ontime is accessible on any device with a web browser, including tablets,
-    mobile phones, laptops, production signage, and media servers.{" "}
+  <Card title="あらゆるデバイスに対応" icon="approve-check">
+    Web ブラウザを搭載したあらゆるデバイス（タブレット、スマートフォン、ノート PC、サイネージ用ディスプレイ、メディアサーバーなど）からアクセスできます。
   </Card>
-  <Card title="Delay workflows" icon="approve-check">
-    Manage and communicate runtime delays in real-time to your entire production
-    team.
+  <Card title="遅延管理ワークフロー" icon="approve-check">
+    進行中の遅延（ディレイ）をリアルタイムに管理し、制作チーム全体に即座に共有できます。
   </Card>
-  <Card title="Built for teamwork" icon="approve-check">
-    Ontime offers real-time collaboration tools for various roles in your
-    production team, including directors, operators, and backstage crew, without
-    imposing any restrictions on the number of team members who can join a
-    session.
+  <Card title="チームワークのために設計" icon="approve-check">
+    ディレクター、オペレーター、バックステージスタッフなど、制作チームのさまざまな役割に合わせたリアルタイムコラボレーションツールを提供します。セッションに参加できる人数に制限はありません。
   </Card>
-  <Card title="Automatable" icon="approve-check">
-    Ontime can be fully or partially controlled by an operator, or run
-    standalone with the system clock for automated rundowns.
+  <Card title="柔軟な自動化" icon="approve-check">
+    オペレーターによる完全な手動操作や部分的な制御のほか、システムクロックと連動したスタンドアロンの自動進行も可能です。
   </Card>
-  <Card title="Focus on integrations" icon="approve-check">
-    Use one of the APIs provided (OSC, HTTP, Websocket) or the available
-    Companion module to integrate into your existing workflow (disguise, Qlab,
-    OBS).
+  <Card title="豊富な外部連携" icon="approve-check">
+    OSC、HTTP、WebSocket の各 API や [Companion モジュール](https://bitfocus.io/connections/getontime-ontime) を使用して、既存のワークフロー（disguise、Qlab、OBS、vMix など）にシームレスに組み込めます。
   </Card>
 </CardGrid>
 
-### Roadmap
+### フィードバックと開発参加
 
-Ontime is under active development. We continue adding and tweaking features in collaboration with users.
+Ontime は現在も活発に開発が進められています。
 
-:::tip[Have an idea?]
-Reach out via email at [mail@getontime.no](mailto:mail@getontime.no), [open an issue in GitHub](https://github.com/cpvalente/ontime/issues), join our [Discord server](https://discord.com/invite/eje3CSUEXm) or [Subreddit](https://www.reddit.com/r/ontimeapp/).
+:::tip[機能のリクエストやご意見はありますか？]
+日本語フォーク版（ontime-JP）に関する不具合報告や改善要望は [ontime-JP GitHub Issue](https://github.com/sorami-wanwan/ontime-JP/issues) までお寄せください。 \
+オリジナル版 Ontime の開発コミュニティについては、[メール (mail@getontime.no)](mailto:mail@getontime.no)、[公式 GitHub Issue](https://github.com/cpvalente/ontime/issues)、[Discord サーバー](https://discord.com/invite/eje3CSUEXm) などをご利用いただけます。
 :::
+

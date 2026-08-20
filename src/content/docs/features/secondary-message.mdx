@@ -1,20 +1,22 @@
 ---
-title: Secondary message
-description: Inject messages to the Ontime presenter view
+title: セカンダリメッセージ（サブメッセージ）
+description: 登壇者画面にメッセージや外部情報を配信
 ---
 
-You can show any text as a secondary field in the [stage timer](/interface/automated/stage-timer).
+[ステージタイマー](/interface/automated/stage-timer/) のサブフィールド（セカンダリメッセージ領域）に、任意のテキストを表示できます。
 
 ![Timer with external data](../../../assets/screenshots/views/4-timer.png)
 
-This external message can be set from the editor interface or [API](#setting-secondary-message-from-api). \
-The API's provided by Ontime are ideal for software-to-software communication.
+このメッセージはエディタ画面から手動入力できるほか、[API](#api-からのセカンダリメッセージ設定) 経由で外部ソフトウェアから自動送信することも可能です。 \
+Ontime の API を活用することで、ソフトウェア間の自動連携がスムーズに行えます。
 
-Typical use cases include:
-- share non-intrusive information with the speaker eg: a talking point reminder
-- show information from another software, such as the title of a playing media asset or its elapsed time
+主な利用用途：
+- 登壇者の邪魔にならない形で補足情報を伝える（例: 「残り時間を意識してください」「マイクに近づいてください」など）
+- 他のソフトウェアから情報を表示する（例: 再生中の動画タイトルや経過時間など）
 
-### Setting secondary message from API
+### API からのセカンダリメッセージ設定
 
-The secondary message is great to allow other applications to share data with Ontime.
-See the documentation on setting the external message using the [OSC](/api/protocols/osc/#example-change-the-secondary-message-text), [HTTP](/api/protocols/http/#example-change-the-secondary-message-text) or [WebSocket](/api/protocols/websockets/#example-change-the-secondary-message-text) APIs.
+セカンダリメッセージは、他のアプリケーションから Ontime へリアルタイムデータを送るのに最適です。 \
+[OSC](/api/protocols/osc/#例-セカンダリメッセージサブメッセージのテキスト変更)、[HTTP](/api/protocols/http/#例-セカンダリメッセージサブメッセージのテキスト変更)、[WebSocket](/api/protocols/websockets/#例-セカンダリメッセージサブメッセージのテキスト変更) の各 API ドキュメントを参照してください。
+
+

@@ -17,18 +17,25 @@ export default defineConfig({
       plugins: [
         starlightLinksValidator(),
       ],
-      title: "Ontime documentation",
+      title: "Ontime ドキュメント",
       favicon: "./favicon.ico",
       logo: {
         src: "./src/assets/images/logo.png",
         replacesTitle: true,
       },
       customCss: ["./src/styles/custom.css"],
+      defaultLocale: "root",
+      locales: {
+        root: {
+          label: "日本語",
+          lang: "ja",
+        },
+      },
       social: [
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/cpvalente/ontime",
+          href: "https://github.com/sorami-wanwan/ontime-JP",
         },
         {
           icon: "discord",
@@ -47,7 +54,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: "https://github.com/cpvalente/ontime-docs/edit/main",
+        baseUrl: "https://github.com/sorami-wanwan/ontime-docs-JP/edit/main",
       },
       sidebar: [
         {
@@ -62,15 +69,15 @@ export default defineConfig({
               link: "/ontime-cloud/",
             },
             {
-              label: "Manage your stages",
+              label: "ステージの管理",
               link: "/ontime-cloud/manage-stages/",
             },
             {
-              label: "Manage your team",
+              label: "チームの管理",
               link: "/ontime-cloud/manage-teams/",
             },
             {
-              label: "Manage your account",
+              label: "アカウントの管理",
               link: "/ontime-cloud/manage-account/",
             },
             {
@@ -84,83 +91,89 @@ export default defineConfig({
           ],
         },
         {
-          label: "Ontime concepts",
+          label: "基本概念",
           autogenerate: { directory: "concepts" },
         },
         {
-          label: "Interface",
+          label: "ユーザーインターフェース",
           items: [
             {
-              label: "Interface overview",
+              label: "インターフェース概要",
               link: "/interface/",
             },
             {
-              label: "Production views",
+              label: "制作ビュー",
               autogenerate: { directory: "interface/production" },
             },
             {
-              label: "Automated views",
+              label: "自動配信ビュー",
               autogenerate: { directory: "interface/automated" },
             },
           ],
         },
         {
-          label: "Features",
+          label: "機能",
           autogenerate: { directory: "features" },
         },
         {
-          label: "Feedback and control",
+          label: "連携と制御 (API)",
           items: [
             {
-              label: "API overview",
+              label: "API概要",
               link: "/api/",
             },
             {
-              label: "Data",
+              label: "データ",
               autogenerate: { directory: "api/data" },
             },
             {
-              label: "Automation",
+              label: "オートメーション",
               autogenerate: { directory: "api/automation" },
             },
             {
-              label: "Protocol API",
+              label: "プロトコル別 API",
               autogenerate: { directory: "api/protocols" },
             },
           ],
         },
         {
-          label: "Quick tips",
+          label: "クイックTips",
           autogenerate: { directory: "quick-tips" },
         },
         {
-          label: "Additional notes",
+          label: "補足事項",
           autogenerate: { directory: "additional-notes" },
         },
         {
-          label: "External links",
+          label: "外部リンク",
           items: [
             {
-              label: "Ontime website",
+              label: "Ontime 公式サイト",
               link: "https://www.getontime.no",
               badge: "Link",
               attrs: { target: "_blank" },
             },
             {
-              label: "Github Repo",
-              link: "https://www.github.com/cpvalente/ontime",
+              label: "GitHub (ontime-JP)",
+              link: "https://github.com/sorami-wanwan/ontime-JP",
               badge: "Link",
               attrs: { target: "_blank" },
             },
             {
-              label: "Youtube Channel",
+              label: "GitHub (公式英語版)",
+              link: "https://github.com/cpvalente/ontime",
+              badge: "Link",
+              attrs: { target: "_blank" },
+            },
+            {
+              label: "YouTube チャンネル",
               link: "https://www.youtube.com/@ontimeapp",
               badge: "Link",
               attrs: { target: "_blank" },
             },
             {
-              label: "Subreddit",
-              link: "https://www.reddit.com/r/ontimeapp",
+              label: "Discord サーバー",
+              link: "https://discord.com/invite/eje3CSUEXm",
               badge: "Link",
               attrs: { target: "_blank" },
             },

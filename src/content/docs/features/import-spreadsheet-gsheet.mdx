@@ -1,138 +1,139 @@
 ---
-title: Import from Google Sheets
-description: Import data from Google Sheets
+title: Google スプレッドシートからのインポートと同期
+description: Google スプレッドシートからデータをインポート・同期
 ---
 
 import { Steps } from "@astrojs/starlight/components";
 
 [spreadsheet-link]: https://docs.google.com/spreadsheets/d/1zT6yRgQUaICEiAFR85VEL-E9hAUDujKg6DaWR0iDYmY
 
-You can synchronise Ontime to a Google Sheet. \
-This is ideal for collaboration or extensive data manipulation.
+Ontime は Google スプレッドシートと双方向に同期できます。 \
+複数人でのリアルタイム共同編集や、スプレッドシート上での一括データ管理に最適です。
 
 ![Spreadsheet template](../../../assets/screenshots/features/spreadsheet-template.png)
-Follow [here][spreadsheet-link] to see the Google Sheet from the screenshot
-To enable this feature, you will to need provide Ontime with the necessary permissions.\
-From there, we can read and write to the Google Sheet spreadsheet.
+上記スクリーンショットの Google スプレッドシート テンプレートは [こちら][spreadsheet-link] から確認できます。
 
-:::note[Prerequisites]
-To use the Google Sheet integration, you will a Google account and to the Google Console. \
-The machine running Ontime must have access to the internet.
+この機能を利用するには、Ontime に Google スプレッドシートへのアクセス権限を付与する必要があります。 \
+認証完了後、Google スプレッドシートから進行表を読み込んだり書き出したりできるようになります。
+
+:::note[前提条件]
+Google スプレッドシート連携機能を利用するには、Google アカウントと Google Cloud Console へのアクセスが必要です。 \
+また、Ontime が動作しているマシンがインターネットに接続されている必要があります。
 :::
 
 <Steps>
   <ol>
     <li>
-      ### Create project
+      ### プロジェクトの作成
       <details>
-        <summary>Go to https://console.cloud.google.com/ and create a new project</summary>
+        <summary>https://console.cloud.google.com/ にアクセスし、新しいプロジェクトを作成します</summary>
         ![step-1.1](../../../assets/screenshots/features/sheet-guide/step-1.1.jpg)
         ![step-1.2](../../../assets/screenshots/features/sheet-guide/step-1.2.jpg)
         ![step-1.3](../../../assets/screenshots/features/sheet-guide/step-1.3.jpg)
       </details>
 
       <details>
-        <summary>On the front page select the newly created project</summary>
+        <summary>作成したプロジェクトを選択します</summary>
         ![step-1.1](../../../assets/screenshots/features/sheet-guide/step-1.1.jpg)
         ![step-1.4](../../../assets/screenshots/features/sheet-guide/step-1.4.jpg)
       </details>
     </li>
     <li>
-      ### Enable the Sheet API
+      ### Google Sheets API の有効化
       <details>
-        <summary>Open the sidebar and click "APIs and Services"</summary>
+        <summary>サイドバーを開き、「APIとサービス」をクリックします</summary>
         ![step-2.00](../../../assets/screenshots/features/sheet-guide/step-2.00.jpg)
         ![step-2.01](../../../assets/screenshots/features/sheet-guide/step-2.01.jpg)
       </details>
       <details>
-        <summary>Click "Enable APIs and Services"</summary>
+        <summary>「APIとサービスの有効化」をクリックします</summary>
         ![step-2.02](../../../assets/screenshots/features/sheet-guide/step-2.02.jpg)
       </details>
 
       <details>
-        <summary>... and search for "Sheets"</summary>
+        <summary>検索バーで「Sheets」を検索し、Google Sheets API を有効化します</summary>
         ![step-2.2](../../../assets/screenshots/features/sheet-guide/step-2.2.jpg)
         ![step-2.3](../../../assets/screenshots/features/sheet-guide/step-2.3.jpg)
         ![step-2.4](../../../assets/screenshots/features/sheet-guide/step-2.4.jpg)
       </details>
     </li>
     <li>
-      ### Setup Data Access
+      ### データアクセスの設定（OAuth 同意画面）
       <details>
-        <summary>Add the necessary scopes</summary>
-        Go to "Data Access" and click "Add or remove scopes"
-        This could depend on your organization is set up but it should make sense by reading through the options
+        <summary>必要なスコープを追加します</summary>
+        「データアクセス」に移動し、「スコープの追加または削除」をクリックします。
+        組織の設定に応じて適切に選択してください。
         ![step-3.1](../../../assets/screenshots/features/sheet-guide/step-3.1.jpg)
 
-        Find the correct scopes by filtering for "sheets"
+        「sheets」でフィルターして目的のスコープを検索します。
         ![step-3.4](../../../assets/screenshots/features/sheet-guide/step-3.4.jpg)
 
-        Enable ".../auth/spreadsheets" and click "Update"
+        「.../auth/spreadsheets」にチェックを入れ、「更新」をクリックします。
         ![step-3.5](../../../assets/screenshots/features/sheet-guide/step-3.5.jpg)
       </details>
 
       <details>
-        <summary>Click save and continue</summary>
+        <summary>保存して次へ進みます</summary>
         ![step-3.6](../../../assets/screenshots/features/sheet-guide/step-3.6.jpg)
-        For "Test users" add the email(s) the will be using this. \
-        Save and go back to the dashboard
+        「テストユーザー」に、連携に使用する Google アカウントのメールアドレスを追加します。 \
+        保存してダッシュボードに戻ります。
       </details>
 
       <details>
-        <summary>Add test user</summary>
-        Go to "Audience" and click "Add users"
-        Here add the email(s) the will be using this. \
-        Remember to save
+        <summary>テストユーザーの追加</summary>
+        「対象ユーザー」に移動し、「ユーザーの追加」をクリックします。 \
+        使用するメールアドレスを追加し、保存します。
         ![step-3.7](../../../assets/screenshots/features/sheet-guide/step-3.7.jpg)
       </details>
     </li>
     <li>
-      ### Create credentials
+      ### 認証情報（クライアントシークレット）の作成
       <details>
-        <summary>Go to "Clients"</summary>
+        <summary>「認証情報」に移動します</summary>
         ![step-4.1](../../../assets/screenshots/features/sheet-guide/step-4.1.jpg)
       </details>
 
       <details>
-        <summary>Click "Create client"</summary>
+        <summary>「認証情報を作成」から「OAuth クライアント ID」をクリックします</summary>
         ![step-4.2](../../../assets/screenshots/features/sheet-guide/step-4.2.jpg)
       </details>
 
       <details>
-        <summary>For Application type select "TVs and Limited input device", give it a name and click "create"</summary>
+        <summary>アプリケーションの種類で「テレビと入力が制限されたデバイス」を選択し、名前を入力して「作成」をクリックします</summary>
         ![step-4.3](../../../assets/screenshots/features/sheet-guide/step-4.3.jpg)
       </details>
 
       <details>
-        <summary>Download the result, we are now done with the Google console</summary>
+        <summary>生成された JSON ファイル（client_secret.json）をダウンロードします。これで Google Console 側の設定は完了です</summary>
         ![step-4.5](../../../assets/screenshots/features/sheet-guide/step-4.5.jpg)
       </details>
     </li>
     <li>
-      ### Connect Ontime
+      ### Ontime との接続
       <details>
-        <summary>Go to the sheet sync settings</summary>
+        <summary>Ontime の Google スプレッドシート同期設定画面を開きます</summary>
         ![step-5.1](../../../assets/screenshots/features/sheet-guide/step-5.1.jpg)
         ![step-5.2](../../../assets/screenshots/features/sheet-guide/step-5.2.jpg)
         ![step-5.3](../../../assets/screenshots/features/sheet-guide/step-5.3.jpg)
       </details>
 
       <details>
-        <summary>Upload the file we have downloaded from Google console</summary>
+        <summary>Google Cloud Console からダウンロードした client_secret.json ファイルをアップロードします</summary>
         ![step-5.4](../../../assets/screenshots/features/sheet-guide/step-5.4.jpg)
       </details>
 
       <details>
-        <summary>Get the sheet ID, paste it in Ontime and click connect</summary>
+        <summary>対象の Google スプレッドシートの URL からシート ID をコピーして Ontime に貼り付け、「接続」をクリックします</summary>
         ![step-5.5](../../../assets/screenshots/features/sheet-guide/step-5.5.jpg)
         ![step-5.6](../../../assets/screenshots/features/sheet-guide/step-5.6.jpg)
       </details>
 
       <details>
-        <summary>Copy the code and click authenticate and follow the instructions from Google</summary>
+        <summary>表示された認証コードをコピーし、「認証」をクリックしてブラウザで Google の認証フローを完了します</summary>
         ![step-5.7](../../../assets/screenshots/features/sheet-guide/step-5.7.jpg)
       </details>
     </li>
 
   </ol>
 </Steps>
+

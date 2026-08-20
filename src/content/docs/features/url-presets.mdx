@@ -1,40 +1,38 @@
 ---
-title: URL Presets
-description: Define URL presets to ease onsite setup
+title: URLプリセット (URL Presets)
+description: 現場でのセットアップを容易にするURLプリセットの定義
 ---
 
-URL presets are user defined aliases (shortcuts) to Ontime URLs.
+URLプリセットは、Ontime の各種 URL に対して設定できるユーザー定義のエイリアス（短縮名・別名）機能です。
 
-The configuration for URL Presets is done centrally from the Editor settings at `Editor` -> `Sharing and reporting` -> `URL Presets`. \
-This means that these can be changed for all users accessing Ontime from one place, without changes necessary in the other devices.
+URLプリセットの設定は、`エディタ` -> `共有とレポート` -> `URLプリセット` から一元的に管理できます。 \
+個別の端末側で設定を変更することなく、Ontime サーバー側の一箇所で設定を変更するだけで、アクセスしている全ユーザーに設定を反映できます。
 
-The feature serves two primary purposes:
+この機能には主に 2 つの目的があります：
 
-### Providing dynamic URLs for automation or unattended screens
-Consider the case of fixed devices, unattended screens or hardware integrations, where access to change the browser URL may be impractical. \
-Any changes to the aliases will be automatically reflected in the devices that are pointed at that URL.
+### 1. 固定端末や自動配信モニターへの動的 URL 提供
+壁掛けモニター、固定設置のタブレット、ハードウェア連携など、ブラウザの URL を直接手動変更するのが困難なデバイスを運用する場合に効果的です。 \
+サーバー側でエイリアスの割り当て先を変更するだけで、その URL を開いている全端末の表示内容が自動的に更新されます。
 
-### Managing complex view configurations
-We may have specific configurations for operator views or utility screens that we want to manage centrally. \
-See example below:
+### 2. 複雑なビュー設定の一元管理
+特定のオペレーター画面やサイネージ画面で詳細な表示オプションを設定したい場合、それらをサーバー側でプリセットとして保存・管理できます。
 
-
-:::tip[Aliases example]
-Consider a camera operator that needs an Ontime view with a specific configuration. \
-We have configured the view as necessary and it resolves to the following URL:
+:::tip[エイリアス設定の実例]
+特定のカスタムフィールドや表示設定を必要とするカメラオペレーターの例を考えてみましょう。 \
+画面のカスタマイズを行い、以下のような長い URL が生成されたとします：
 `http://localhost:4001/op?main=note&secondary=custom-name&hidepast=true`
 
-We may want to manage the configuration in Ontime, so that the camera operator can access the already configured view without needing to concern about the view options.
-This is a typical use case for URL Presets.
+カメラマンにこの複雑な URL を手動入力させたり設定項目を選ばせたりする代わりに、URLプリセットを作成してシンプルなエイリアスを割り当てます。
 
-To achieve this we would need the following steps:
+設定手順は以下の通りです：
 ![URL Presets](../../../assets/screenshots/features/url-presets.png)
 
-1. Open the relevant view and configure using the [available configuration options](/quick-tips/configuring-views)  
-2. Once configured, copy the view result URL and navigate to `Editor` -> `Sharing and reporting` -> `URL Presets` create a **New Preset**
-3. Give Ontime an alias for the URL (eg: cam3) and paste the link in the `Paste URL` input
-4. Click **Generate** and **Save** to make the new preset and save it
+1. 目的のビューを開き、[設定オプション](/quick-tips/configuring-views/) を使って好みの表示に調整します
+2. 設定後のブラウザ URL をコピーし、`エディタ` -> `共有とレポート` -> `URLプリセット` に移動して **新規 (New Preset)** をクリックします
+3. エイリアス名（例: `cam3`）を入力し、コピーしたリンクを `URLを貼り付け` 欄に入力します
+4. **生成** をクリックしてパラメーターを展開し、**保存** をクリックしてプリセットを保存します
 
-From here, anyone that accesses Ontime on the URL `http://localhost:4001/cam3` will be redirected to configured link.
+これで、現場の端末から `http://localhost:4001/cam3` にアクセスするだけで、事前設定済みのオペレーター画面が即座に開くようになります。
 :::
+
 

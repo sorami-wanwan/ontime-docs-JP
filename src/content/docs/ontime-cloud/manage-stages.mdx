@@ -1,49 +1,48 @@
 ---
-title: Manage your stages
-description: Hosted service for Ontime - manage stages
+title: ステージの管理
+description: Ontime Cloud - ステージの管理
 ---
 
-After signing up for Ontime Cloud, you can access the app's dashboard to manage your stages, teams, and subscriptions.
+Ontime Cloud にサインアップすると、ダッシュボードにアクセスしてステージ、チーム、サブスクリプションを管理できるようになります。
 
-## Manage your stages
+## ステージの管理
 
 ![Dashboard stages](../../../assets/ontime-cloud/dashboard-stages.png)
 
-With the Ontime Cloud PRO subscription, you are currently allowed to manage three concurrent stages. \
-Each stage is a separate version of Ontime. The stages can be started and stopped at any time.
+Ontime Cloud PRO サブスクリプションでは、最大 3 つのステージを同時に管理できます。 \
+各ステージは独立した個別の Ontime インスタンスです。ステージはいつでも起動（Start）および停止（Stop）できます。
 
-Once a stage is started, Ontime will generate a permanent link that is unique for that stage. \
-This link is public, and anyone with access to this link will be able to access your Ontime stage.
+ステージを起動すると、そのステージ専用の固有な恒久リンク（URL）が生成されます。 \
+このリンクはパブリックにアクセス可能で、URL を知っている人なら誰でもその Ontime ステージにアクセスできます。
 
-The link stays reserved while the stage exists, even when it is stopped, so you can safely shut it down between sessions and restart it later without losing the URL.\
-When you are done with the project you can delete the stage to release the link, this will make sure you generate a new one the next time you start the stage.
+リンクはステージが存在する限り予約されたまま維持されるため、リハーサルや本番セッションの合間に安全に停止させ、後で同じ URL で再開することができます。 \
+プロジェクトが完全に終了したらステージを削除（Delete）してリンクを解放できます。次回新しくステージを作成した際には新しい URL が生成されます。
 
-:::note[Ontime version]
-When a stage is created, it runs the latest available version of Ontime.
+:::note[Ontime のバージョン]
+ステージを新規作成すると、その時点で最新の Ontime バージョンで起動します。
 
-To ensure stability and prevent unexpected disruptions, the stage does not update automatically. \
-You can update a running stage by stopping it and running the `Upgrade version` action.
+本番運用の安定性を保ち、予期せぬトラブルを防ぐため、稼働中のステージが自動でバージョン更新されることはありません。 \
+ステージをアップデートしたい場合は、一度ステージを停止し、`Upgrade version`（バージョンのアップグレード）アクションを実行してください。
 
-There is no data loss while the stage is stopped but the link will be temporarily unavailable.
+ステージ停止中もデータが失われることはありませんが、一時的にリンクへはアクセスできなくなります。
 :::
 
-### Stage lifecycle actions
-- **Start** – Creates a stage with the latest version of Ontime and reserves a public link.
-- **Stop** – Makes the link temporarily unavailable. You can stop a stage to modify options, upgrade a stage or simply to make a stage not accessible for a period of time without losing its data. Stopping a stage does not lose any data inside the stage.
-- **Delete** – Permanently deletes the public link and the stage data. This is not reversible.
+### ステージのライフサイクル操作
+- **Start (開始)** – 最新バージョンの Ontime でステージを作成・起動し、パブリックリンクを予約します。
+- **Stop (停止)** – リンクを一時的にアクセス不可にします。設定の変更、バージョンのアップグレード、またはデータを維持したまま一定期間アクセスさせたくない場合に使用します。停止してもステージ内のデータは保持されます。
+- **Delete (削除)** – パブリックリンクとステージ内の全データを完全に削除します。この操作は取り消せません。
 
+### タイムゾーン (Timezone)
+ステージごとに個別のタイムゾーンを設定できます。
 
-### Timezone
-You can assign unique timezones for each stage.
+ドロップダウンメニューから主要なタイムゾーンを選択できるほか、任意の IANA タイムゾーン（例: `Asia/Tokyo` や `Europe/Oslo`）を直接指定することもできます。 \
+タイムゾーン一覧は [Wikipedia (IANA タイムゾーン一覧)](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) を参照してください。
 
-We provide a small list of unique world timezones in the dropdown menu. \
-Alternatively, you can add choose any IANA timezone (eg. "Europe/Oslo").\
-See a list of timezones in [wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+### パスワード
+Ontime では、制作画面（エディタ、オペレーター、キューシート）を PIN コードで保護することができます。
 
-### Password
-In Ontime you can add a simple layer of protecting to production screens (eg. Editor, Operator and Cuesheet) with a pin code.
+さらに強力なアクセス制御を行いたい場合は、Ontime Cloud のダッシュボードからステージ全体にアクセスパスワードを設定することも可能です。
 
-For extra access control, you can also define in Ontime Cloud dashboard a password for the stage.
+パスワードを設定しない場合、リンクを知っているすべてのユーザーがステージにアクセスできます。 \
+パスワードを変更する場合は、ステージを一度停止して再起動する必要があります。
 
-If no password is provided, anyone with the link can access your stage. \
-To change the password, you will need to stop and restart the stage.

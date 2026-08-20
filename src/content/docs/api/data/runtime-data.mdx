@@ -1,33 +1,30 @@
 ---
-title: Runtime data
-description: Runtime data
+title: ランタイムデータ (Runtime Data)
+description: Ontime のリアルタイム実行データ
 ---
 
-Ontime broadcasts its state over WebSockets.\
-This allows for integrations to sync to the state of the application.
+Ontime は現在の状態を WebSocket 経由でリアルタイムにブロードキャスト（配信）しています。 \
+これにより、外部システムやカスタムビューがアプリケーションの状態とミリ秒単位で同期できます。
 
-See below a full definition of the data that Ontime holds. \
-This data should be used in conjunction with the [Automation feature](/api/automation#using-variables-in-automation).
+Ontime が保持するランタイムデータの全体構造は以下の通りです。 \
+このデータ構造は [オートメーション機能での変数指定](/api/automation/#オートメーションでの変数の使用) でも使用されます。
 
-:::tip[Show me the code]
-This documentation can get out of sync as we add new features to Ontime, \
-[see the type definition in the code here](https://github.com/cpvalente/ontime/blob/master/packages/types/src/definitions/runtime/RuntimeStore.type.ts) \
-and the instantiation of the ["empty state" here](https://github.com/cpvalente/ontime/blob/master/apps/client/src/common/stores/runtime.ts)
+:::tip[実際の型定義を確認する]
+新機能の追加に伴いドキュメントが更新されるまでの間、最新の型定義は [ソースコード上の RuntimeStore.type.ts](https://github.com/cpvalente/ontime/blob/master/packages/types/src/definitions/runtime/RuntimeStore.type.ts) および [初期ステート定義](https://github.com/cpvalente/ontime/blob/master/apps/client/src/common/stores/runtime.ts) で直接確認できます。
 :::
 
 :::note
-Ontime broadcasts messages formatted as below. \
-Where the type `Ontime` indicates the type of message, and the payload is a portion of the [Runtime data object](#runtime-data-object)
+Ontime が配信するメッセージは以下のような形式です。 \
+`type` にメッセージ種別（`ontime`）が入り、`payload` に [ランタイムデータオブジェクト](#ランタイムデータオブジェクト) が含まれます。
 
 ```ts
-// example broadcast message from Ontime
+// Ontime からのブロードキャストメッセージ例
 { type: "ontime", payload: "<runtime-data-object>"}
 ```
 
-To keep things efficient, Ontime also broadcasts the individual objects in state as they change. \
-This allows for smaller payloads and granular updates.
+通信効率を高めるため、Ontime は変更された個別オブジェクトのみを小さな差分メッセージとしても配信します：
 ```ts
-// Ontime sends smaller messages to update subsets of the object
+// 変更されたサブセットのみを更新する個別メッセージ
 { type: "ontime-timer", payload: "<runtime-data-object>.timer"}
 { type: "ontime-offset", payload: "<runtime-data-object>.offset"}
 { type: "ontime-eventNow", payload: "<runtime-data-object>.eventNow"}
@@ -35,38 +32,38 @@ This allows for smaller payloads and granular updates.
 ```
 :::
 
-## Runtime data object
+## ランタイムデータオブジェクト
+
 :::note
-All times are in milliseconds from midnight.
+すべての時刻・時間は午前0時からの **ミリ秒 (ms)** で表現されます。
 :::
 
 ### ontime-clock
-Contains the server wall clock time.
+サーバーの現在時刻（システムクロック）を保持します。
 ```ts
 {
   clock: number
 }
-````
+```
 
 ### ontime-timer
-Contains data related to the application timer
+アプリケーションのタイマーに関するデータを保持します。
 ```ts
 {
-  addedTime: number                                         // time added / removed by user
-  current: number | null                                    // running countdown
-  duration: null                                            // duration of loaded event
-  elapsed: null                                             // elapsed time in current timer
-  playback: 'play' | 'pause' | 'armed' | 'stop' | 'roll'    // playback state
-  startedAt: number | null                                  // time when current timer was started
-  expectedFinish: number | null                             // time when current timer is expected to finish
-  finishedAt: number | null                                 // time when current timer reached 0
+  addedTime: number                                         // ユーザーによって追加/短縮された時間
+  current: number | null                                    // 実行中のカウントダウン値
+  duration: null                                            // ロード中イベントの所要時間
+  elapsed: null                                             // 現在のタイマーの経過時間
+  playback: 'play' | 'pause' | 'armed' | 'stop' | 'roll'    // プレイバック再生状態
+  startedAt: number | null                                  // タイマーが開始された時刻
+  expectedFinish: number | null                             // タイマーが終了する見込み時刻
+  finishedAt: number | null                                 // タイマーが0に到達した時刻
 }
-````
+```
 
 ### ontime-message
-Data related to message feature. It contains two message objects:
-Corresponding to the visibility of messages to the [stage timer view](/interface/automated/stage-timer).
-and [secondary messages](/features/secondary-message) (also displayed in the stage timer view).
+メッセージ機能に関するデータを保持します。2つのメッセージオブジェクトを含みます：
+[ステージタイマー画面](/interface/automated/stage-timer/) へのメッセージ表示状態と、[セカンダリメッセージ（サブメッセージ）](/features/secondary-message/) のデータです。
 
 ```ts
 timer: {
@@ -77,44 +74,45 @@ timer: {
   secondarySource: 'aux1' | 'aux2' | 'aux3' | 'secondary' | null
 }
 secondary: string
-````
+```
 
 ### ontime-rundown
-Contains data related to the application rundown.
+進行表（ランダウン）全体に関するデータを保持します。
 ```ts
 {
-  numEvents: number                                             // number of events in rundown
-  selectedEventIndex: number | null                             // index of selected event
-  plannedStart: number                                          // schedule start time
-  plannedEnd: number | null                                     // schedule end time
-  actualStart: number | null                                    // actual start time of rundown
-  currentDay: number | null                                     // internally used to calculate day offsets
-  actualGroupStart: number | null                               // actual start time of the current group
-  offset: number | null                                         // difference between current runtime and schedule
-  expectedEnd: number | null                                    // time for expected end
+  numEvents: number                                             // 進行表内のイベント総数
+  selectedEventIndex: number | null                             // 選択中イベントのインデックス
+  plannedStart: number                                          // 進行表の開始予定時刻
+  plannedEnd: number | null                                     // 進行表の終了予定時刻
+  actualStart: number | null                                    // 進行表の実際の開始時刻
+  currentDay: number | null                                     // 日付またぎ計算用の内部フラグ
+  actualGroupStart: number | null                               // 現在グループの実際の開始時刻
+  offset: number | null                                         // スケジュールとの現在の遅延・進み差分
+  expectedEnd: number | null                                    // 進行表全体の終了見込み時刻
 }
-````
+```
 
 ### ontime-offset
-Contains data related to the application offset.
+進行表の遅延（オフセット）に関するデータを保持します。
 ```ts
 {
-  absolute: number                                              // accounts for planned times
-  relative: number                                              // only counts for generated offset since start
-  mode: 'absolute' | 'relative'                                 // currently selected offset mode
-  expectedGroupEnd: number | null                               // expected end time of the current group
-  expectedRundownEnd: number | null                             // expected end time of the rundown
-  expectedFlagStart: number | null                              // expected start time of the next flagged event
+  absolute: number                                              // 予定時刻を基準としたオフセット
+  relative: number                                              // 開始後の進行のみを考慮した相対オフセット
+  mode: 'absolute' | 'relative'                                 // 現在選択されているオフセットモード
+  expectedGroupEnd: number | null                               // 現在グループの終了見込み時刻
+  expectedRundownEnd: number | null                             // 進行表全体の終了見込み時刻
+  expectedFlagStart: number | null                              // 次のフラグ付きイベントの開始見込み時刻
 }
-````
+```
 
-### ontime-auxtimer1 (2 and 3)
-Contains data related to the [auxiliary timer](/features/aux-timer).
+### ontime-auxtimer1 (2 および 3)
+[AUXタイマー（補助タイマー）](/features/aux-timer/) に関するデータを保持します。
 ```ts
 {
-  duration: number                                              // total duration of auxiliary timer
-  current: number                                               // current value
-  playback: 'play' | 'pause' | 'stop'                           // playback state
-  direction: 'count-down' | 'count-up'                          // counting direction
+  duration: number                                              // AUXタイマーの設定時間
+  current: number                                               // 現在のタイマー値
+  playback: 'play' | 'pause' | 'stop'                           // 再生状態
+  direction: 'count-down' | 'count-up'                          // カウント方向
 }
-````
+```
+

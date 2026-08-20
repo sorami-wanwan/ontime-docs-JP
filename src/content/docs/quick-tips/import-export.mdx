@@ -1,34 +1,33 @@
 ---
-title: Import - export data
-description: Import - export data
+title: データのインポートとエクスポート
+description: プロジェクトファイルやスプレッドシートの入出力
 ---
 
-Your data is yours to keep and manage. \
-Ontime provides features to allow you to manage your project files, including exporting your data to use somewhere else.
+作成した進行表や設定データはすべてユーザー自身のものです。 \
+Ontime では、プロジェクトファイルの書き出し・読み込みや、他ツールへのエクスポート機能が充実しています。
 
-This also means that you can easily transfer data between Ontime running in your machine and our Cloud service. \
-This way you are not locked in our service, and can use it when it makes sense.
+ローカル PC で動作している Ontime と Ontime Cloud サービスの間でデータを移動する際にも、同じファイル形式で簡単に行き来できます。
 
+## Ontime プロジェクトファイルの書き出し / 読み込み
 
-## Export / Import Ontime project files
+### プロジェクトファイルのエクスポート
+`エディタ` -> `プロジェクト` -> `プロジェクト管理` から、プロジェクトファイルをエクスポートできます。 \
+プロジェクトファイルは、進行表やアプリケーションの全設定を含む `JSON` 形式のファイルです。
 
-### Exporting project file
-You can export and import project files from the project manager `Editor` -> `Project` -> `Manage projects`.
-The project file is a `JSON` formatted file that includes your rundowns and all the application settings.
+### プロジェクトファイルのインポート
+他のユーザーと共有されたプロジェクトファイルやバックアップファイルを、`エディタ` -> `プロジェクト` -> `プロジェクト管理` からインポートできます。
 
-### Importing project file
-If you are sharing project files across users or projects, you can import a previously exported project file in the project manager `Editor` -> `Project` -> `Manage projects`.
+また、インポートしたプロジェクトから特定の設定や進行表のみを現在のプロジェクトに取り込む **部分読み込み（Partial Load）** 機能も備わっています。 \
+複数のプロジェクト間で共通のプリセットや設定を再利用したい場合に最適です。
 
-Once a file is imported into Ontime, you can also use `Partial Load` to load only parts of another project into the currently loaded project. \
-This is a great way to create preset files that are reusable across your projects.
+## スプレッドシートへの進行表エクスポート
+進行表データを Excel やスプレッドシート形式で書き出したい場合：
 
-## Export rundowns to spreadsheet
-It is a common use case that you would need to export your rundown data to a spreadsheet.
+`エディタ` -> `プロジェクト設定` -> `進行表の管理` を開き、オーバーフローメニュー（3点リーダー）から **.xlsx をダウンロード** をクリックします。 \
+また、[Google スプレッドシート連携](/features/import-spreadsheet-gsheet/) を使用して直接アップロード・ダウンロードすることも可能です。
 
-You do this by navigation to  `Editor` -> `Project settings` -> `Manage projects rundowns` and clicking the **Download .xslx** option in the overlow menu. \
-Additionally, you can upload or download directly from a [Google Sheet](/features/import-spreadsheet-gsheet).
+### スプレッドシートからの進行表インポート
+Excel、Numbers、Google スプレッドシート等で作成した `.xlsx` / `.csv` ファイルから進行表をインポートできます。
 
-### Import rundown data from spreadsheets
-You can import your rundown from a spreadsheet (eg. `XSLX` from Excel, Numbers, or Google Sheet).
+詳しくは [スプレッドシートからのインポート](/features/import-spreadsheet/) および [Google スプレッドシート連携ガイド](/features/import-spreadsheet-gsheet/) をご覧ください。
 
-Read more in the features documentation for [importing from spreadsheet](/features/import-spreadsheet) and [importing from Google Sheet](/features/import-spreadsheet-gsheet).

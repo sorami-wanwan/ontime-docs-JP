@@ -1,45 +1,42 @@
 ---
-title: Crashes and corrupted data
-description: Crashes and corrupted data - handling runtime issues
+title: クラッシュと破損データの保護
+description: 異常終了時の自動復旧とデータ整合性の保護
 ---
 
-Sometimes things go badly. \
-Ontime provides a few fail-safes to protect its runtime.
+万一の不具合やアクシデントに備え、Ontime はデータの破損を防ぎ、本番進行を継続するための安全機構を備えています。
 
+:::tip[データ保存ディレクトリの場所]
+ユーザーディレクトリの場所は OS およびインストール方法によって異なります。 \
+デスクトップアプリ版をお使いの場合、アプリメニューの `ファイル` -> `保存先ディレクトリを開く` から直接アクセスできます。 \
+その中に `crash` フォルダや `corrupt files` フォルダが作成されます。
 
-:::tip[Where are these file?]
-The user directory location is dependent on both the operating system and installation. \
-If you are running Ontime locally in an installer, you can find the path to the internal files by using the application menu `File` -> `Open Directory` -> `...`. \
-From here you will find the `crash` and `corrupt files` directories
-
-**For PC users**\
+**Windows の場合:**\
 `AppData/Roaming/Ontime/`
 
-**For Mac users**\
+**macOS の場合:**\
 `Library/Application Support/Ontime/`
 
-**For Linux user:**\
+**Linux の場合:**\
 `Home/Ontime/styles/`
 :::
 
+## クラッシュログ (Crash logs)
+万一 Ontime のプロセスが異常終了した場合、ユーザーディレクトリ内にクラッシュログが生成されます。
 
-## Crash logs
-If the Ontime process crashes, we generate a crash log in the user directory.
+ログファイルを添付して GitHub Issue やメールでお知らせいただくことで、迅速な調査と修正が行われます。
 
-Send it over and we will take a look.
+## 異常終了からの自動復旧 (Recover on bad shutdown)
+マシンの電源断やクラッシュなどによって Ontime が不意に終了した場合でも、次回起動時に前回の実行状態が自動的に復元されます。
 
-## Recover on bad shutdown
-If the app detects that it has been shutdown unexpectedly (in the examples of crash or machine shutdown), Ontime will recover the state on the next start.
+Ontime を再起動するだけで、現在進行中のタイマーや再生位置が本来あるべき状態へと自動復旧します。
 
-This means that you can restart Ontime and the app will jump the playback state to where it should be.
+## 破損データの自動隔離と修復 (Refuse corrupt data)
+Ontime はプロジェクトファイルを読み込む際、データの整合性を厳密に検証します。
 
-## Refuse corrupt data
-When Ontime loads a project it ensures that its data is correct.
+外部ソフトウェアによる不正な書き込みやバージョンアップ時の不整合などで壊れたデータを検出した場合、パーサーは処理を中断して安全を確保します。
 
-If Ontime is to find data that is either corrupt, or does not conform with the expectations, the data will be refused by the parser. \
-This can happen in the case of external software writing to Ontime's project, or while upgrading Ontime versions.
+大切なデータを保護するため、Ontime は読み込み前にプロジェクトのバックアップを作成し、`corrupt files` ディレクトリに退避します。 \
+その後、読み込み可能な部分を復元したファイルが `(recovered)` という名前で生成されます。
 
-To safeguard your data, Ontime creates a copy of the project before parsing and pushes it to a `corrupt files` directory. \
-The parsed file is renamed to include a `(recovered)` label.
+また、データ構造が変更された新バージョンへプロジェクトを移行した場合は、自動的に `(migrated)` というファイルが新規作成されます。
 
-When a project is migrated across versions which contain data structure changes, you will find that we create a new file and label it `(migrated)`.

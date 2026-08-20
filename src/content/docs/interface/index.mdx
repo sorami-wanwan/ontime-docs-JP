@@ -1,48 +1,49 @@
 ---
-title: Interface overview
-description: Ontime offers different views as ways of interacting with the data
+title: インターフェース概要
+description: Ontime が提供する多様な画面ビューと活用方法
 ---
 
 ![Ontime](../../../assets/images/ontime-4-all.png)
 
-## Available views
+## 利用可能なビュー一覧
 
-Ontime offers different interfaces to consume and extend rundown data, these interfaces are designed to support different tasks:
+Ontime は、目的に応じて進行表データを閲覧・編集できる多様なインターフェースを提供しています：
 
-- [Production views](#production-views): interactive views where users can edit the rundown and add information, focusing on detailed and collaborative work
-- [Automated views](#automated-views): non-interactive displays that present key parts of the rundown in a clear, accessible way to support quick reference and coordination during the show.
+- [制作ビュー (Production views)](#制作ビュー-production-views): 進行表の編集や情報入力が可能なインタラクティブな画面。詳細な進行管理やチームでの協調作業に適しています。
+- [自動配信ビュー (Automated views)](#自動配信ビュー-automated-views): 閲覧専用（ノンインタラクティブ）のディスプレイ画面。本番中の確認や部署間連携のために、進行表の重要情報を分かりやすく表示します。
 
-Any device with a browser in the same network can access Ontime's views by reaching to the IP address of the device where Ontime is running and its port. eg.
+同じローカルネットワーク内にあるブラウザ搭載デバイスから、Ontime が動作しているマシンの IP アドレスとポート番号を指定して各ビューにアクセスできます。例:
 ```
-http://<ip-address:port>/editor -> http://192.168.10.1:4001>/editor
+http://<IPアドレス:ポート番号>/editor -> http://192.168.10.1:4001/editor
 ```
 
 :::note
-All views are configurable, allowing users to customise the behaviour and data of each interface. \
-The configuration for automated views is saved in the URL for easy bookmarking and sharing.
+すべてのビューはカスタマイズ可能で、表示項目や動作を自由に設定できます。 \
+自動配信ビューの設定内容は URL パラメーターに保持されるため、ブックマークや共有も簡単に行えます。
 
-[Read more](/quick-tips/configuring-views)
+詳しくは [ビューの設定クイックTips](/quick-tips/configuring-views/) をご覧ください。
 :::
 
-### Production views
+### 制作ビュー (Production views)
 
-These refer to views which allow for data entry and are typically used by directors, show runners and operators.
+データの入力や操作が可能な画面で、主にディレクター、舞台監督、オペレーターなどが使用します。
 
-| URL                                             | See the docs                               |
+| URL                                             | ドキュメント                                |
 | :---------------------------------------------- | :----------------------------------------- |
-| `https://cloud.getontime.no/my-stage/editor`    | [Editor](/interface/production/app-editor) |
-| `https://cloud.getontime.no/my-stage/cuesheet`  | [Cuesheet](/interface/production/cuesheet) |
-| `https://cloud.getontime.no/my-stage/op`        | [Operator](/interface/production/operator) |
+| `https://cloud.getontime.no/my-stage/editor`    | [エディタ (Editor)](/interface/production/app-editor/) |
+| `https://cloud.getontime.no/my-stage/cuesheet`  | [キューシート (Cuesheet)](/interface/production/cuesheet/) |
+| `https://cloud.getontime.no/my-stage/op`        | [オペレーター (Operator)](/interface/production/operator/) |
 
-### Automated views
+### 自動配信ビュー (Automated views)
 
-Automated views are non-interactive interfaces focusing on displaying the rundown data at different levels of detail. \
-These views are meant for unattended (signage) screens without user interaction after setup.
+進行表データを様々なレイアウトで自動表示する閲覧専用画面です。 \
+初期設定後はユーザー操作を行わずにサイネージやモニターとして無人運用できます。
 
-| URL                                              | See the docs                                        |
+| URL                                              | ドキュメント                                         |
 | :----------------------------------------------- | :-------------------------------------------------- |
-| `https://cloud.getontime.no/my-stage/timer`      | [Timer](/interface/automated/stage-timer)           |
-| `https://cloud.getontime.no/my-stage/timeline`   | [Timeline](/interface/automated/timeline)           |
-| `https://cloud.getontime.no/my-stage/backstage`  | [Backstage View](/interface/automated/backstage)    |
-| `https://cloud.getontime.no/my-stage/countdown`  | [Countdown](/interface/automated/countdown)         |
-| `https://cloud.getontime.no/my-stage/studio`     | [Studio Clock](/interface/automated/studio-clock)   |
+| `https://cloud.getontime.no/my-stage/timer`      | [ステージタイマー (Timer)](/interface/automated/stage-timer/)           |
+| `https://cloud.getontime.no/my-stage/timeline`   | [タイムライン (Timeline)](/interface/automated/timeline/)           |
+| `https://cloud.getontime.no/my-stage/backstage`  | [バックステージ (Backstage)](/interface/automated/backstage/)    |
+| `https://cloud.getontime.no/my-stage/countdown`  | [カウントダウン (Countdown)](/interface/automated/countdown/)         |
+| `https://cloud.getontime.no/my-stage/studio`     | [スタジオクロック (Studio Clock)](/interface/automated/studio-clock/)   |
+

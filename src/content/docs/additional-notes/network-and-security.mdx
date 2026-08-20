@@ -1,38 +1,37 @@
 ---
-title: Network and security
-description: Notes on Network and security
+title: ネットワークとセキュリティ
+description: ネットワーク設定とセキュリティに関する注意点
 ---
 
-## Network availability
-Ontime, is a server process.
+## ネットワークの接続性
+Ontime はサーバープロセスとして動作します。
 
-Once Ontime is running, it will make itself available in all network interfaces to which the machine has access. \
-These links can be shared with your team to allow any device that in the same network to access Ontime.
+Ontime が起動すると、マシンがアクセス可能なすべてのネットワークインターフェース（有線 LAN、Wi-Fi、仮想アダプターなど）で自動的に待機を開始します。 \
+生成された URL リンクを現場スタッフと共有することで、同一ネットワーク内にある任意の端末（PC、タブレット、スマートフォン）からブラウザでアクセスできます。
 
-You can also use the IP address of the link for automation from other devices software.
+また、外部ソフトウェアやハードウェアからの自動制御にも、これらの IP アドレスを使用します。
 
-:::caution
-If you cannot reach Ontime from another device, please check your network configuration and firewall. \
-There are no settings in Ontime other than the server port (by default 4001).
+:::caution[注意]
+他のデバイスから Ontime にアクセスできない場合は、マシンのファイアウォール設定や Wi-Fi ルーターの端末間通信制限（プライバシーセパレーターなど）をご確認ください。 \
+Ontime 側の設定はサーバーポート（デフォルト: 4001）のみです。
 
-If you are running behind a **reverse proxy**, please check the configuration and make sure to allow passthrough for WebSockets.
+**リバースプロキシ** の背後で動作させる場合は、WebSockets のパススルー設定（`Upgrade` ヘッダー転送）が有効になっているか必ず確認してください。
 :::
 
-### Find interfaces in Settings
-The Network settings `Editor` -> `Settings` -> `Network` contains the list of Network Interfaces where Ontime is available.
+### 設定画面でのネットワーク確認
+`エディタ` -> `設定` -> `ネットワーク` に、現在 Ontime が利用可能なすべてのネットワークインターフェースと IP アドレスの一覧が表示されます。
 
 ![Network settings](../../../assets/screenshots/editor/settings/network.png)
 
-### Find interfaces in navigation
-If you are using Ontime in the same machine as the app is running. \
-You can find the external links to the view at the bottom of the navigation menu.
+### ナビゲーションメニューでの確認
+Ontime を実行しているマシン本体で操作している場合、ナビゲーションメニューの最下部に外部アクセス用のリンクが表示されます。
 
 ![Network settings](../../../assets/screenshots/features/timer__nav.png)
 
-## Security
-Note that Ontime discourages you from exposing the application in a public network. 
+## セキュリティに関する推奨事項
+Ontime は信頼できるローカルネットワーク内での利用を前提として設計されており、**インターネットなどのパブリックなネットワークに直接公開することは推奨されません**。
 
-You can add a thin layer of protection over some views such as `/editor`, `/cuesheet` and `/op` using the **Pin Code** defined in the **General Settings**.
+`/editor`、`/cuesheet`、`/op` などの操作ビューには、**一般設定** で設定できる **PINコード** による簡易的なアクセス制限をかけることができます。
 
-However, any device in your network can send commands to Ontime, which can alter its runtime. \
-We recommend that **the most significant security control should happen at the network access level**.
+ただし、同一ネットワーク上の端末からは API を介してコマンドを送信できるため、**最も重要なセキュリティ対策はネットワーク層（VLAN 分割や専用 Wi-Fi の設定）で実施することを強く推奨します**。
+

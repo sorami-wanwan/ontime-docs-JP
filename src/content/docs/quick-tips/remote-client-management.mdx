@@ -1,30 +1,30 @@
 ---
-title: Remote Client Management
-description: Overview and management of devices connected to Ontime
+title: リモートクライアント管理
+description: Ontime に接続された全デバイスの一元把握と遠隔制御
 ---
 
-In a live production environment, Ontime will have multiple connections to its server.
-- Operators reading their cues
-- Confidence monitors onstage
-- Public schedules displayed in the foyer
-- Automation systems like Companion or Central Control
+ライブ制作現場では、Ontime サーバーに対して多数のクライアント端末が同時に接続されます：
+- キューを確認する各オペレーターの端末
+- ステージ上の返りモニター（プロンプター・演者用タイマー）
+- ロビーやホワイエに設置された観客・スタッフ用タイムスケジュール画面
+- Bitfocus Companion や Central Control などの自動化システム
 
-It is sometimes desirable to be able to modify what is shown to the clients from a central place in Ontime's interface. \
-This is especially the case in devices with no input (such as PA displays), but also for productions where we prefer having tight control over the system setup.
+Ontime では、これらの接続端末が現在何を表示しているかを一元的に監視し、必要に応じてサーバー側から遠隔操作（表示先のリダイレクトなど）を行うための機能を提供しています。
 
-To support this workflow, Ontime provides two key features:
+このワークフローを支える 2 つの主要機能：
 
-### URL Presets
-Create easy to remember links that point to specific views in Ontime. \
-This makes it simple to set up and share configurations, like a custom view for a camera operator or sound engineer. \
-[See the feature documentation](/features/url-presets).
+### URLプリセット (URL Presets)
+Ontime の特定の画面やカスタマイズ表示にアクセスするための短縮リンクを作成します。 \
+カメラマン用、音響用など、用途別の設定を事前に定義して現場での配布を円滑にします。 \
+詳しくは [URLプリセット機能](/features/url-presets/) をご覧ください。
 
-### Remote client management
+### リモートクライアント管理 (Remote client management)
 ![Link and lock times](../../../assets/screenshots/features/feat_remote-client-management.png)
 
-This interface gathers tools to let you manage connections to Ontime's server
-- Monitor all active connections to Ontime
-- Discover and identify clients
-- Assign descriptive names for easy reference
-- Redirect any client to a different interface or preset remotely
+`エディタ` -> `共有とレポート` -> `クライアント管理` から、以下の操作が可能です：
+- Ontime に接続中の全アクティブ端末のリアルタイム一覧表示
+- 接続端末の自動検出と識別
+- 各端末への分かりやすい名前（例: 「上手モニター」「音響卓iPad」など）の割り当て
+- 任意のクライアント端末の表示画面を、サーバー側から遠隔で別のビューや URL プリセットへ一括リダイレクト（切り替え）
+
 

@@ -1,52 +1,53 @@
 ---
-title: Integrate with vMix
-description: Integrate Ontime with vMix
+title: vMix との連携
+description: Ontime と vMix 間の双方向連携
 ---
 
-## Control Ontime from vMix
-The most straightforward way to get Ontime synced with vMix is by using Ontime's [HTTP API](/api/protocols/http), which provides easy access to the apps playback functions.
+## vMix から Ontime を制御する
+vMix から Ontime を操作する最もシンプルな方法は、Ontime の [HTTP API](/api/protocols/http/) を利用することです。 \
+vMix のスクリプト機能を使って、Ontime の再生・停止・ロードなどを簡単にトリガーできます。
 
-Adapting from [this vMix forum post](https://forums.vmix.com/posts/t7079-http-command-midi), a workflow would look like:
-- Go to `Settings` -> `Scripting` and click `Add`
-- Paste the following and `Save`
+設定手順（vMix の Scripting 機能を使用）：
+- vMix の `Settings` -> `Scripting` を開き、`Add` をクリックします
+- 以下の VB.NET スクリプトを貼り付けて `Save` をクリックします
 
 ```vb
-' This code creates a GET request to Ontime for starting an event with id 4b044
+' Ontime の指定 ID（例: 4b044）のイベントを開始する GET リクエスト
 Dim client = WebRequest.Create("http://<localhost:4001>/api/start/id/<4b044>")
 Dim response = client.GetResponse()
 ```
 
 :::note
-If copying this code, remember to change `<localhost:4001>` to the IP address of the machine running Ontime and `<event-id>` to the relevant ID. You can find the ID in the Ontime interface.
+スクリプト内の `<localhost:4001>` は Ontime が動作しているマシンの IP アドレスおよびポート番号に、`<4b044>` は Ontime のエディタ画面で確認できる対象イベントの ID に置き換えてください。
 
-More information on the endpoints available in the [documentation for the HTTP API](/api/protocols/http).
+利用可能なすべてのエンドポイントは [HTTP API ドキュメント](/api/protocols/http/) で確認できます。
 :::
 
-From here, you should be able to add the script as needed. \
-Please follow vMix documentation for the next steps.
+作成したスクリプトは、vMix のショートカットキーやトリガーに自由に割り当てることができます。
 
-## Control vMix from Ontime
+## Ontime から vMix を制御する（テロップ自動更新など）
 
-You can leverage the [automation feature](/api/automation) to send HTTP data from Ontime to set parameters in vMix.
+Ontime の [オートメーション機能](/api/automation/) を使用して、イベントのロード時や開始時に vMix の API へ HTTP リクエストを送信し、vMix 側のテロップ（タイトル）文字列などを自動更新できます。
 
-The example below will set a **Headline text** property to the title of the current event every time one is loaded.
-- Navigate to the Automation Settings at `Editor` -> `Settings` -> `Automation`
-- In **Manage automations** create a new automation and add an output of type HTTP and add the following URL:
+以下は、Ontime でイベントがスタンバイ（ロード）されるたびに、vMix のタイトル入力にある **Headline.Text** フィールドを現在イベントのタイトルに自動更新する例です：
+
+1. Ontime の `エディタ` -> `設定` -> `オートメーション` を開きます
+2. **オートメーションの管理** で新規作成し、出力タイプに `HTTP` を選択して以下の URL を設定します：
 
 ```bash
 http://127.0.0.1:8088/api/?Function=SetText&Input=Title%201&Value={{eventNow.title}}&SelectedName=Headline.Text
 ```
 
-- In "Manage triggers" create a new trigger and add a title
-- For the lifecycle trigger option select `On Load`
-- For the Automation title option select the previously created automation
+3. **トリガーの管理** で新しいトリガーを作成します
+4. ライフサイクルトリガーに `On Load` を選択します
+5. 割り当てるオートメーションに、先ほど作成したオートメーションを選択して保存します
 
 :::note
-The request above sends variables from Ontime as described in the [automation documentation](/api/automation/#using-variables-in-automation).
-
-Remember to modify the IP address and port as necessary.
+上記の URL では、[オートメーションの変数機能](/api/automation/#オートメーションでの変数の使用)（`{{eventNow.title}}`）を使用して動的にタイトルを代入しています。 \
+IP アドレスやポート（vMix の Web Controller ポート: デフォルト 8088）、タイトル入力名（`Title 1`）はご自身の環境に合わせて変更してください。
 :::
 
 ![Setup HTTP Integration](../../../assets/screenshots/features/vmix_setup-automation.png)
 ![vMix 1](../../../assets/screenshots/features/vmix_1.png)
 ![vMix 2](../../../assets/screenshots/features/vmix_2.png)
+

@@ -1,65 +1,56 @@
 ---
-title: Headless Ontime
-description: Running Ontime in a headless machine
+title: ヘッドレス（GUIなし）での Ontime 実行
+description: ディスプレイやGUIのない環境（CLI / Docker）で Ontime を実行
 ---
 
-You can leverage the headless distributions to run Ontime in a computer without GUI. \
-This could be in a local machine part of the venue's installation, a small Raspberry Pi or even a server running in the cloud.
+Ontime はヘッドレス（CLI または Docker）ディストリビューションを利用して、画面のないサーバー環境でも実行できます。 \
+会場の設備常設サーバー、Raspberry Pi、クラウドの VPS サーバーなどでの運用に最適です。
 
-Headless installs are the most lightweight and versatile ways to distribute and install Ontime.
+ヘッドレス実行は、Ontime を最も軽量かつ柔軟にデプロイできる方法です。
 
-## Using NPM
+## NPM による実行 (CLI)
 
-### Getting started
+### はじめに
 
-#### Prerequisites
-You will need to have installed the correct version of __node.js__.\
-Please check [the app engines declaration](https://github.com/cpvalente/ontime/blob/master/package.json) for the correct version.
+#### 前提条件
+適切なバージョンの **Node.js** がインストールされている必要があります。 \
+必要な Node.js バージョンは [リポジトリ内の package.json](https://github.com/cpvalente/ontime/blob/master/package.json) をご確認ください。
 
-#### Running Ontime
-To get Ontime running, all you need to do is install it in your system using your package manager of choice:
+#### Ontime のインストールと起動
+パッケージマネージャーを使用してグローバルにインストールします：
 
-Install globally in your system 
+システム全体にグローバルインストール：
 ```bash
 npm install -g @getontime/cli
 ```
 
-... and run using the installed script
+インストールしたコマンドを実行：
 ```bash
 ontime
 ```
 
-Or install and run Ontime (the installation here is temporary for the duration of the session)
+または、一時的に実行する場合（npx）：
 ```bash
-npx install @getontime/cli
+npx @getontime/cli
 ```
 
-Once running, the app will be available in any device on the same network over (default port 4001)
+起動後、同一ネットワーク内の任意のデバイスからブラウザでアクセスできます（デフォルトポート: 4001）。
 
-## Using Docker
+## Docker による実行
 
-### Getting started
+### はじめに
 
-Install Docker on your machine. \
-Please refer to [Docker](https://docs.docker.com/engine/install/debian/) or Raspberry Pi guides for this step
+マシンに Docker をインストールします（各 OS や Raspberry Pi の公式ガイドを参照）。
 
-Once Docker is installed, pull the Ontime [image from Dockerhub](https://hub.docker.com/r/getontime/ontime) using the command:
+Docker インストール後、[Docker Hub](https://hub.docker.com/r/getontime/ontime) から Ontime のイメージを取得します：
 
 ```bash
 docker pull getontime/ontime
 ```
 
-You can find an example of docker-compose in the Docker repository to help you get started. \
-To start Ontime with the example docker compose file use the command:
+### docker-compose による起動
 
-```bash
-docker-compose up -d
-```
-
-
-### Notes on Docker-compose
-
-Considering the example docker-compose below
+以下のような `docker-compose.yml` ファイルを作成します：
 
 ```yaml
 version: "3"
@@ -75,53 +66,47 @@ services:
     volumes:
       - "./ontime-data:/data/"
     environment:
-      - TZ=Asia/Singapore
+      - TZ=Asia/Tokyo
     restart: unless-stopped
 ```
 
-* `4001:4001/tcp` binds local port 4001 to the same container port. Port 4001 is the default for the UI and is necessary to expose the app. 
-* `8888:8888/udp` binds the localhost port 8888 (default for OSC input into the app) to the same in the container, so that it can receive data from the host machine targeted to the loopback interface.
-* `8888:8888/udp` binds the localhost port 9999 (default for OSC output from the app) to the same in the container, this allows Ontime to send data out of the container.
-* `"./ontime-data:/data/"` expose the internal container data directory.
-* `TZ=Asia/Singapore` overrides the container timezone.
-
-The variations in the network setup will widely depend on your setup.
-
-### Docker Frequently Asked Questions 🚨
-
-#### Ontime default port
-Ontime serves its web pages on port 4001. 
-In the docker compose example `4001:4001/tcp` exposes this port to the outside so it can be accessed at `http://<ip-address>:4001`. 
-Instead, you could use `80:4001/tcp` to expose the internal container port 4001 to the outside port 80 (the default for http).
-That means your URLs would be slightly simpler since you wouldnt need to provide a port, (eg: `http://<ip-address>/editor` instead og `http://<ip-address>:4001/editor`)
-
-### Volumes
-The app interacts with some directories that the user can interact with.
-In a docker instance, we need to expose this manually to the container host.
-Namely:
-- `/data/projects/` contains all of Ontime's project files
-- `/data/styles/` contains the user provided CSS Override
-- `/data/external/` is a placeholder directory that users can ues to distribute data through Ontime 
-
-You can bind a single host directory to `/data/` for Ontime to store all its files in (as in the example docker-compose, above), or expose the individual parts to host directories:
-
+起動コマンド：
+```bash
+docker-compose up -d
 ```
+
+### 設定内容の解説
+
+* `4001:4001/tcp`: Web UI 用のポートマッピング。ブラウザからアクセスするために必須です。
+* `8888:8888/udp`: OSC 受信用のデフォルトポート。外部機器やホストマシンから Ontime への OSC 入力に使用します。
+* `9999:9999/udp`: OSC 送信用のデフォルトポート。Ontime から外部機器への OSC 送信に使用します。
+* `"./ontime-data:/data/"`: プロジェクトや設定ファイルを永続化するためのボリュームマウント。
+* `TZ=Asia/Tokyo`: コンテナのタイムゾーン（日本標準時）設定。
+
+### よくある質問（FAQ）🚨
+
+#### Ontime のデフォルトポート
+Ontime はデフォルトでポート 4001 で Web サーバーを起動します。 \
+Docker のポート設定を `80:4001/tcp` に変更すると、標準の HTTP ポート（80番）で公開できるため、URL にポート番号を指定せずにアクセスできます（例: `http://<IPアドレス>/editor`）。
+
+#### ボリューム（データの保存先）
+コンテナ内部の主要ディレクトリ：
+- `/data/projects/`: プロジェクトファイルの保存先
+- `/data/styles/`: カスタム CSS 上書きファイルの保存先
+- `/data/external/`: 外部アセット・カスタムビューの配信フォルダ
+
+個別にマウントすることも可能です：
+```yaml
     volumes:
       - "./ontime-projects:/data/projects/"
       - "./ontime-styles:/data/styles/"
       - "./ontime-external:/data/external/"
 ```
 
-#### Setting the time in the container
-Docker containers default to UTC timezone, which you can modify using the `TZ` environment variable.
+#### コンテナの時刻・タイムゾーン設定
+Docker コンテナはデフォルトで UTC タイムゾーンで動作します。環境変数 `TZ=Asia/Tokyo` を指定して適切なタイムゾーンを設定してください。
 
-Setting time in a Docker container is not an operation specific to Ontime. \
-See as an example the instruction in the [following blog post](https://confluence.atlassian.com/kb/how-to-set-the-timezone-for-docker-container-976780914.html), which also contains a list of timezones to use in Docker.
+#### 画面は表示されるがタイマーが動かない場合
+Ontime は時刻データを WebSockets 経由でブラウザにストリーミング配信しています。 \
+リバースプロキシ（NGINX、Caddy、Traefik など）や Synology NAS の背後で運用する場合、プロキシ側で WebSocket の転送（`Upgrade` / `Connection` ヘッダーのパススルー）が正しく設定されているかご確認ください。
 
-#### I can see the UI but no timers will start
-
-Ontime uses WebSockets to transport the time data from the server to the UI. \
-It can be the case that you are leveraging the Docker image to run Ontime in a cloud server or a server behind a reverse proxy.
-
-In those cases, it is common that the WebSocket transport needs some additional configuration in the server side. \
-See documentation for [NGINX](https://nginx.org/en/docs/http/websocket.html) and [this example guide for Synology](https://mariushosting.com/synology-some-docker-containers-need-websocket/).

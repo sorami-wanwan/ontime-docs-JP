@@ -1,19 +1,21 @@
 ---
-title: Auxiliary timer
-description: Small utility timer
+title: AUXタイマー（補助タイマー）
+description: 独立して動作する小型ユーティリティタイマー
 ---
 
-The Auxiliary timer is a feature that allows parallel, free-running clocks alongside the rundown playback. \
-These timers do not affect the rundown but serve as an interface for tracking arbitrary events. For example: 
-- how long is a particular section
-- countdown to a media playback end time
+AUXタイマー（Auxiliary timer / 補助タイマー）は、進行表の再生とは独立して並行して自由にカウント・計測できる時計機能です。 \
+進行表自体のスケジュールには影響を与えず、以下のような任意の計測を行うのに便利です：
+- 特定セグメントの経過時間の測定
+- 動画・メディア再生の残り時間のカウントダウン
 
 ![Ontime](../../../assets/screenshots/features/aux-timer.png)
 
-### Controlling the auxiliary timer
-The Auxiliary timer can be controlled in the [Editor interface](/interface/production/app-editor/) or through one of the APIs (follow docs for [HTTP](/api/protocols/http/#auxiliary-timer), [OSC](/api/protocols/osc/#auxiliary-timer) or [WebSockets](/api/protocols/websockets/#auxiliary-timer)).
+### AUXタイマーの制御
+AUXタイマーは [エディタ画面](/interface/production/app-editor/) または各種 API（[HTTP](/api/protocols/http/#auxタイマー補助タイマー)、[OSC](/api/protocols/osc/#auxタイマー補助タイマー)、[WebSockets](/api/protocols/websockets/#auxタイマー補助タイマー) のドキュメントを参照）から制御できます。
 
-### Display the auxiliary timer in the stage timer view
-Additionally, you can display the secondary timer as a secondary field in the [stage timer view](/interface/automated/stage-timer/). 
+### ステージタイマー画面への表示
+さらに、AUXタイマーは [ステージタイマー画面](/interface/automated/stage-timer/) のサブフィールド（セカンダリ表示）として登壇者モニターに表示させることも可能です。
 
-This can be done in the [Editor interface](/interface/production/app-editor/) or through one of the APIs (follow docs for [HTTP](/api/protocols/http/#example-secondary-source-in-the-stage-timer-view), [OSC](/api/protocols/osc/#example-secondary-source-in-the-stage-timer-view) or [WebSockets](/api/protocols/websockets/#example-secondary-source-in-the-stage-timer-view)). 
+この設定は [エディタ画面](/interface/production/app-editor/) または各種 API（[HTTP](/api/protocols/http/#例-ステージタイマー画面のセカンダリソース切り替え)、[OSC](/api/protocols/osc/#例-ステージタイマー画面のセカンダリソース切り替え)、[WebSockets](/api/protocols/websockets/#例-ステージタイマー画面のセカンダリソース切り替え) のドキュメントを参照）から行えます。
+
+ 

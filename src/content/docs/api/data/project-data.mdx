@@ -1,36 +1,34 @@
 ---
-title: Project data
-description: Documentation for the HTTP API on the project data
+title: プロジェクトデータ (Project Data)
+description: プロジェクトデータを操作する HTTP API ドキュメント
 ---
 
 :::note
-This list is incomplete. \
-By not documenting some of the endpoints, we allow ourselves the opportunity to make changes.
+このエンドポイント一覧は主要なものを抜粋しています。 \
+一部のエンドポイントは今後の拡張や変更の柔軟性を保つため非公開となっています。
 
-If you think this is incorrect or that there should be contracts for extra resources, [**get in touch!**](mailto:mail@getontime.no)
+追加のリソースやエンドポイントについての仕様要望・ご相談は [メール (mail@getontime.no)](mailto:mail@getontime.no) または GitHub Issue までお寄せください。
 :::
 
-## Rundown
+## 進行表 (Rundown)
 
-The following endpoints allow operations on the rundown of the currently loaded project.
+以下のエンドポイントを使用すると、現在読み込まれているプロジェクトの進行表に対するデータ操作が可能です。
 
-:::tip[Show me the code]
-This documentation can get out of sync as we add new features to Ontime.
-
-[Follow the link for the code entrypoint](https://github.com/cpvalente/ontime/blob/master/apps/server/src/api-data/rundown/rundown.router.ts)
+:::tip[実際のコードを確認する]
+新機能の追加に伴いドキュメントが更新されるまでの間、最新のルーター実装は [GitHub 上のコード (rundown.router.ts)](https://github.com/cpvalente/ontime/blob/master/apps/server/src/api-data/rundown/rundown.router.ts) で確認できます。
 :::
 
-### GET Rundown
+### GET Rundown (進行表の取得)
 
-Allows requesting the full rundown.
+進行表全体のデータを取得します。
 
-**Request**
+**リクエスト**
 
 ```bash
 GET <localhost:4001>/data/rundown/current
 ```
 
-**Response**
+**レスポンス**
 
 ```ts
 200: {
@@ -43,88 +41,87 @@ GET <localhost:4001>/data/rundown/current
 }
 ```
 
-### POST Entry
+### POST Entry (エントリの追加)
 
-Adds a new entry to the rundown.
+進行表に新しいエントリを追加します。
 
-**Request**
+**リクエスト**
 
 ```bash
 POST <localhost:4001>/data/rundown/:rundownId/entry
 ```
 
-**Request Body**
+**リクエストボディ**
 
-The endpoint expect the properties of [Ontime Event](/api/data/event-data). All properties are optional.
+リクエストボディには [Ontime イベントデータ](/api/data/event-data/) のプロパティを指定します（すべて任意）。
 
-Additionally you can send an after property with the ID of the event after which the element should be added. \
-If this property is not provided, the event is appended to the end of the rundown.
+また、`after` プロパティに挿入位置の直前となるイベント ID を指定できます。 \
+`after` を省略した場合は進行表の末尾に追加されます。
 
 ```
-| property             | value                                     |
-| -------------------- | ----------------------------------------- |
+| プロパティ           | 設定値                                    |
+| -------------------- | ----------------------------------------- |
 | type                 | "event" | "delay" | "group" | "milestone" |
 | after                | Optional<string>                          |
 ```
 
-**Response**
+**レスポンス**
 
 ```ts
 201: {OntimeEntry}
 ```
 
-### PUT Event
+### PUT Event (イベントの更新)
 
-Patches the contents of an existing event.
+既存のイベントの内容を部分更新（パッチ）します。
 
-**Request**
+**リクエスト**
 
 ```bash
 PUT <localhost:4001>/data/rundown/:rundownId/:entryId
 ```
 
-**Request Body**
+**リクエストボディ**
 
-The endpoint expect a patch object that includes an event ID and any of the properties of [Ontime Event](/api/data/event-data).
+イベント ID と更新したい [Ontime イベントデータ](/api/data/event-data/) のプロパティを含むオブジェクトを送信します。
 
-All properties are optional.
+すべてのプロパティは任意（指定したフィールドのみ更新）です。
 
 ```
-
-| property             | value                       |
-| -------------------- | --------------------------- |
+| プロパティ           | 設定値                      |
+| -------------------- | --------------------------- |
 | id                   | Required<string>            |
 ```
 
-**Response**
+**レスポンス**
 
-The response contains the event as it is added to the rundown.
+更新後のイベントデータが返されます。
 
 ```ts
 200: {OntimeEntry}
 ```
 
-### DELETE Event
+### DELETE Event (イベントの削除)
 
-Deletes events given its IDs.
+指定した ID のイベントを進行表から削除します。
 
-**Request**
+**リクエスト**
 
 ```bash
 DELETE <localhost:4001>/data/rundown/:rundownId/:entryId
 ```
 
-**Request Body**
+**リクエストボディ**
 
 ```
-
-| param                | value                |
-| -------------------- | -------------------- |
+| パラメーター         | 設定値               |
+| -------------------- | -------------------- |
 | ids                  | Required<string[]>   |
 ```
 
-**Response**
+**レスポンス**
 
 ```ts
 204: {message: 'Events deleted'}
 ```
+
